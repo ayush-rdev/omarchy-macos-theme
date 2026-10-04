@@ -1,0 +1,479 @@
+// ========================================================
+// macOS Sequoia Dark Mode Theme for AyuGram / Telegram Desktop
+// Synced with Omarchy macOS Theme & Apple Design Resources
+// ========================================================
+
+// Apple macOS System Colors
+macBg: #1e1e1e;
+macDarkBg: #161618;
+macDarkerBg: #0f0f10;
+macCardBg: #2c2c2e;
+macHoverBg: #262629;
+macActiveBg: #0a84ff;
+macSelection: #274b78;
+
+macFg: #f5f5f7;
+macMutedFg: #86868b;
+macDimFg: #636366;
+macWhite: #ffffff;
+macBlack: #000000;
+
+macBlue: #0a84ff;
+macLightBlue: #409cff;
+macCyan: #64d2ff;
+macGreen: #30d158;
+macYellow: #ffd60a;
+macOrange: #ff9f0a;
+macRed: #ff453a;
+macPurple: #bf5af2;
+
+rippleLight: #ffffff12;
+rippleHeavy: #ffffff25;
+cTransparent: #00000000;
+
+// --- Window & Base Styling ---
+windowBg: macBg;
+windowFg: macFg;
+windowBgOver: macHoverBg;
+windowBgRipple: rippleLight;
+windowFgOver: macWhite;
+windowSubTextFg: macMutedFg;
+windowSubTextFgOver: macLightBlue;
+windowBoldFg: macWhite;
+windowBoldFgOver: macWhite;
+windowBgActive: macBlue;
+windowFgActive: macWhite;
+windowActiveTextFg: macBlue;
+windowShadowFg: #00000055;
+windowShadowFgFallback: #000000;
+shadowFg: cTransparent;
+slideFadeOutBg: macBg;
+slideFadeOutShadowFg: cTransparent;
+imageBg: macDarkerBg;
+imageBgTransparent: macWhite;
+
+// --- Buttons & Controls ---
+activeButtonBg: macBlue;
+activeButtonBgOver: #0071e3;
+activeButtonBgRipple: rippleHeavy;
+activeButtonFg: macWhite;
+activeButtonFgOver: macWhite;
+activeButtonSecondaryFg: #d0e6ff;
+activeButtonSecondaryFgOver: macWhite;
+activeLineFg: macBlue;
+activeLineFgError: macRed;
+
+lightButtonBg: cTransparent;
+lightButtonBgOver: macCardBg;
+lightButtonBgRipple: rippleLight;
+lightButtonFg: macBlue;
+lightButtonFgOver: macLightBlue;
+
+attentionButtonFg: macRed;
+attentionButtonFgOver: #ff6961;
+attentionButtonBgOver: #ff453a25;
+attentionButtonBgRipple: rippleLight;
+
+outlineButtonBg: cTransparent;
+outlineButtonBgOver: macCardBg;
+outlineButtonOutlineFg: macBlue;
+outlineButtonBgRipple: rippleLight;
+
+// --- Menus & Popups (macOS Frosted Card) ---
+menuBg: #252528;
+menuBgOver: macBlue;
+menuBgRipple: rippleLight;
+menuIconFg: macMutedFg;
+menuIconFgOver: macWhite;
+menuSubmenuArrowFg: macMutedFg;
+menuFgDisabled: macDimFg;
+menuSeparatorFg: #ffffff15;
+
+// --- Scrollbars ---
+scrollBarBg: #ffffff20;
+scrollBarBgOver: #ffffff40;
+scrollBg: cTransparent;
+scrollBgOver: cTransparent;
+
+// --- Inputs, Sliders, Checkboxes ---
+smallCloseIconFg: macMutedFg;
+smallCloseIconFgOver: macRed;
+radialFg: macBlue;
+radialBg: macCardBg;
+placeholderFg: macDimFg;
+placeholderFgActive: macMutedFg;
+inputBorderFg: #3a3a3c;
+filterInputBorderFg: macBlue;
+checkboxFg: macDimFg;
+sliderBgInactive: #3a3a3c;
+sliderBgActive: macBlue;
+tooltipBg: #1c1c1ee8;
+tooltipFg: macFg;
+tooltipBorderFg: #ffffff18;
+
+// --- Titlebar (macOS Sequoia Seamless Header) ---
+titleBg: macDarkBg;
+titleBgActive: macDarkBg;
+titleShadow: cTransparent;
+titleButtonFg: macMutedFg;
+titleButtonBg: cTransparent;
+titleButtonBgOver: #ffffff10;
+titleButtonFgOver: macWhite;
+titleButtonCloseBg: cTransparent;
+titleButtonCloseFg: macMutedFg;
+titleButtonCloseBgOver: #ff453a20;
+titleButtonCloseFgOver: macRed;
+titleFgActive: macWhite;
+titleFg: macMutedFg;
+titleButtonBgActive: cTransparent;
+titleButtonBgActiveOver: #ffffff10;
+titleButtonFgActiveOver: macWhite;
+titleButtonFgActive: macMutedFg;
+titleButtonCloseBgActive: cTransparent;
+titleButtonCloseFgActive: macMutedFg;
+titleButtonCloseBgActiveOver: #ff453a20;
+titleButtonCloseFgActiveOver: macRed;
+
+// --- System Elements & Overlays ---
+trayCounterBg: macRed;
+trayCounterBgMute: macDimFg;
+trayCounterFg: macWhite;
+trayCounterBgMacInvert: macMutedFg;
+trayCounterFgMacInvert: macWhite;
+layerBg: #00000077;
+cancelIconFg: macMutedFg;
+cancelIconFgOver: macRed;
+
+boxBg: macBg;
+boxTextFg: macFg;
+boxTextFgGood: macGreen;
+boxTextFgError: macRed;
+boxTitleFg: macWhite;
+boxSearchBg: macCardBg;
+boxSearchCancelIconFg: cancelIconFg;
+boxSearchCancelIconFgOver: cancelIconFgOver;
+boxTitleAdditionalFg: macMutedFg;
+boxTitleCloseFg: cancelIconFg;
+boxTitleCloseFgOver: cancelIconFgOver;
+membersAboutLimitFg: macRed;
+
+contactsBg: macBg;
+contactsBgOver: macHoverBg;
+contactsNameFg: macWhite;
+contactsStatusFg: macMutedFg;
+contactsStatusFgOver: macWhite;
+contactsStatusFgOnline: macBlue;
+photoCropFadeBg: layerBg;
+photoCropPointFg: macBlue;
+
+introBg: macBg;
+introTitleFg: macWhite;
+introDescriptionFg: macMutedFg;
+introErrorFg: macRed;
+introCoverTopBg: macBg;
+introCoverBottomBg: macBg;
+introCoverIconsFg: macMutedFg;
+introCoverPlaneTrace: macBlue;
+introCoverPlaneInner: macBlue;
+introCoverPlaneOuter: macBlue;
+introCoverPlaneTop: macBlue;
+
+// --- Left Chat List (Dialogs Sidebar) ---
+dialogsMenuIconFg: macMutedFg;
+dialogsMenuIconFgOver: macWhite;
+dialogsBg: macDarkBg;
+dialogsBgOver: macHoverBg;
+dialogsBgActive: macBlue;
+dialogsNameFg: macFg;
+dialogsNameFgOver: macWhite;
+dialogsNameFgActive: macWhite;
+dialogsChatIconFg: macMutedFg;
+dialogsChatIconFgOver: macWhite;
+dialogsChatIconFgActive: #d0e6ff;
+dialogsDateFg: macMutedFg;
+dialogsDateFgOver: macMutedFg;
+dialogsDateFgActive: #d0e6ff;
+dialogsTextFg: macMutedFg;
+dialogsTextFgOver: macFg;
+dialogsTextFgActive: #e5f1ff;
+dialogsTextFgService: macBlue;
+dialogsTextFgServiceOver: macLightBlue;
+dialogsTextFgServiceActive: macWhite;
+dialogsDraftFg: macRed;
+dialogsDraftFgOver: macRed;
+dialogsDraftFgActive: #ffe2e0;
+dialogsVerifiedIconBg: macBlue;
+dialogsVerifiedIconBgOver: macBlue;
+dialogsVerifiedIconBgActive: macWhite;
+dialogsVerifiedIconFg: macWhite;
+dialogsVerifiedIconFgOver: macWhite;
+dialogsVerifiedIconFgActive: macBlue;
+dialogsSendingIconFg: macMutedFg;
+dialogsSendingIconFgOver: macMutedFg;
+dialogsSendingIconFgActive: #d0e6ff;
+dialogsSentIconFg: macGreen;
+dialogsSentIconFgOver: macGreen;
+dialogsSentIconFgActive: macWhite;
+dialogsUnreadBg: macBlue;
+dialogsUnreadBgOver: macBlue;
+dialogsUnreadBgActive: macWhite;
+dialogsUnreadBgMuted: #3a3a3c;
+dialogsUnreadBgMutedOver: #48484a;
+dialogsUnreadBgMutedActive: #ffffffaa;
+dialogsUnreadFg: macWhite;
+dialogsUnreadFgOver: macWhite;
+dialogsUnreadFgActive: macBlue;
+dialogsForwardBg: macCardBg;
+dialogsForwardFg: macWhite;
+
+searchedBarBg: macCardBg;
+searchedBarBorder: cTransparent;
+searchedBarFg: macMutedFg;
+topBarBg: macDarkBg;
+
+// --- Emoji & Sticker Panes ---
+emojiPanBg: #252528;
+emojiPanCategories: #202023;
+emojiPanHeaderFg: macMutedFg;
+emojiPanHeaderBg: #252528;
+stickerPanDeleteBg: #ff453a25;
+stickerPanDeleteFg: macRed;
+stickerPreviewBg: cTransparent;
+
+// --- Chat History & Authentic Apple iMessage Bubbles ---
+historyTextInFg: macFg;
+historyTextOutFg: macWhite;
+historyCaptionInFg: historyTextInFg;
+historyCaptionOutFg: historyTextOutFg;
+historyFileNameInFg: historyTextInFg;
+historyFileNameOutFg: historyTextOutFg;
+historyOutIconFg: #d0e6ff;
+historyOutIconFgSelected: macWhite;
+historyIconFgInverted: macWhite;
+historySendingOutIconFg: #d0e6ff99;
+historySendingInIconFg: macMutedFg;
+historySendingInvertedIconFg: #ffffff99;
+
+historySystemBg: #252528bb;
+historySystemBgSelected: macBlue;
+historySystemFg: macFg;
+historyUnreadBarBg: #252528ee;
+historyUnreadBarBorder: #3a3a3c;
+historyUnreadBarFg: macBlue;
+historyForwardChooseBg: macCardBg;
+historyForwardChooseFg: macWhite;
+
+// Peer Avatar / Name Colors (Apple Vibrancy Palette)
+historyPeer1NameFg: macRed;
+historyPeer1UserpicBg: macRed;
+historyPeer2NameFg: macGreen;
+historyPeer2UserpicBg: macGreen;
+historyPeer3NameFg: macYellow;
+historyPeer3UserpicBg: macYellow;
+historyPeer4NameFg: macCyan;
+historyPeer4UserpicBg: macCyan;
+historyPeer5NameFg: macPurple;
+historyPeer5UserpicBg: macPurple;
+historyPeer6NameFg: macOrange;
+historyPeer6UserpicBg: macOrange;
+historyPeer7NameFg: #ac8e68;
+historyPeer7UserpicBg: #ac8e68;
+historyPeer8NameFg: macBlue;
+historyPeer8UserpicBg: macBlue;
+historyPeerUserpicFg: macWhite;
+
+historyScrollBarBg: scrollBarBg;
+historyScrollBarBgOver: scrollBarBgOver;
+historyScrollBg: scrollBg;
+historyScrollBgOver: scrollBgOver;
+
+// Message Bubbles: macOS System Gray 5 (In) & Apple iMessage Blue (Out)
+msgInBg: #2c2c2e;
+msgInBgSelected: #3a3a3c;
+msgOutBg: #0a84ff;
+msgOutBgSelected: #0071e3;
+msgSelectOverlay: #0a84ff20;
+msgStickerOverlay: #0a84ff35;
+msgInServiceFg: macCyan;
+msgInServiceFgSelected: macWhite;
+msgOutServiceFg: #d0e6ff;
+msgOutServiceFgSelected: macWhite;
+msgInShadow: cTransparent;
+msgInShadowSelected: cTransparent;
+msgOutShadow: cTransparent;
+msgOutShadowSelected: cTransparent;
+
+msgInDateFg: #86868bcc;
+msgInDateFgSelected: #ffffffaa;
+msgOutDateFg: #d0e6ffaa;
+msgOutDateFgSelected: #ffffffaa;
+
+msgServiceFg: #e5e5ea;
+msgServiceBg: #252528b0;
+msgServiceBgSelected: macBlue;
+
+msgInReplyBarColor: macBlue;
+msgInReplyBarSelColor: macWhite;
+msgOutReplyBarColor: macWhite;
+msgOutReplyBarSelColor: macWhite;
+msgImgReplyBarColor: macWhite;
+
+msgInMonoFg: macOrange;
+msgOutMonoFg: #ffe5b4;
+msgDateImgFg: macWhite;
+msgDateImgBg: #00000060;
+msgDateImgBgOver: #00000080;
+msgDateImgBgSelected: macBlue;
+
+msgFileThumbLinkInFg: macBlue;
+msgFileThumbLinkInFgSelected: macWhite;
+msgFileThumbLinkOutFg: macWhite;
+msgFileThumbLinkOutFgSelected: macWhite;
+
+msgFileInBg: #363638;
+msgFileInBgOver: #444446;
+msgFileInBgSelected: macBlue;
+msgFileOutBg: #2191ff;
+msgFileOutBgOver: #389eff;
+msgFileOutBgSelected: #0071e3;
+
+msgFile1Bg: macCyan;
+msgFile1BgDark: #40c0ff;
+msgFile1BgOver: #7ae0ff;
+msgFile1BgSelected: macWhite;
+
+msgFile2Bg: macGreen;
+msgFile2BgDark: #24b846;
+msgFile2BgOver: #4de070;
+msgFile2BgSelected: macWhite;
+
+msgFile3Bg: macRed;
+msgFile3BgDark: #e03228;
+msgFile3BgOver: #ff6961;
+msgFile3BgSelected: macWhite;
+
+msgFile4Bg: macYellow;
+msgFile4BgDark: #e0bc00;
+msgFile4BgOver: #ffe066;
+msgFile4BgSelected: macWhite;
+
+msgWaveformInActive: macBlue;
+msgWaveformInActiveSelected: macWhite;
+msgWaveformInInactive: #48484a;
+msgWaveformInInactiveSelected: #ffffff50;
+msgWaveformOutActive: macWhite;
+msgWaveformOutActiveSelected: macWhite;
+msgWaveformOutInactive: #d0e6ff70;
+msgWaveformOutInactiveSelected: #ffffff60;
+
+msgBotKbOverBgAdd: rippleLight;
+msgBotKbIconFg: macFg;
+msgBotKbRippleBg: rippleHeavy;
+
+mediaInFg: macBlue;
+mediaInFgSelected: macWhite;
+mediaOutFg: macWhite;
+mediaOutFgSelected: macWhite;
+
+youtubePlayIconBg: macRed;
+youtubePlayIconFg: macWhite;
+videoPlayIconBg: #00000080;
+videoPlayIconFg: macWhite;
+toastBg: #252528f0;
+toastFg: macWhite;
+reportSpamBg: macCardBg;
+reportSpamFg: macFg;
+historyToDownShadow: cTransparent;
+
+// --- Bottom Compose Box ---
+historyComposeAreaBg: macBg;
+historyComposeAreaFg: historyTextInFg;
+historyComposeAreaFgService: macMutedFg;
+historyComposeIconFg: macMutedFg;
+historyComposeIconFgOver: macBlue;
+historySendIconFg: macBlue;
+historySendIconFgOver: macLightBlue;
+historyPinnedBg: macDarkBg;
+historyReplyBg: macDarkBg;
+historyReplyCancelFg: macMutedFg;
+historyReplyCancelFgOver: macRed;
+historyComposeButtonBg: macBg;
+historyComposeButtonBgOver: macCardBg;
+historyComposeButtonBgRipple: rippleLight;
+
+overviewCheckBg: cTransparent;
+overviewCheckFg: macBlue;
+overviewCheckFgActive: macWhite;
+overviewPhotoSelectOverlay: #0a84ff40;
+profileStatusFgOver: macBlue;
+
+notificationsBoxMonitorFg: macFg;
+notificationsBoxScreenBg: macCardBg;
+notificationSampleUserpicFg: macBlue;
+notificationSampleCloseFg: macRed;
+notificationSampleTextFg: macFg;
+notificationSampleNameFg: macWhite;
+
+mainMenuBg: macDarkBg;
+mainMenuCoverBg: macCardBg;
+mainMenuCoverFg: macWhite;
+
+mediaPlayerBg: macDarkBg;
+mediaPlayerActiveFg: macBlue;
+mediaPlayerInactiveFg: #3a3a3c;
+mediaPlayerDisabledFg: macDimFg;
+
+// --- Media Viewer (Fullscreen Lightbox) ---
+mediaviewFileBg: #1c1c1ef0;
+mediaviewFileNameFg: macWhite;
+mediaviewFileSizeFg: macMutedFg;
+mediaviewFileRedCornerFg: macRed;
+mediaviewFileYellowCornerFg: macYellow;
+mediaviewFileGreenCornerFg: macGreen;
+mediaviewFileBlueCornerFg: macBlue;
+mediaviewFileExtFg: macWhite;
+mediaviewMenuBg: #252528f0;
+mediaviewMenuBgOver: macBlue;
+mediaviewMenuBgRipple: rippleLight;
+mediaviewMenuFg: macWhite;
+mediaviewBg: #000000ee;
+mediaviewVideoBg: #000000;
+mediaviewControlBg: #252528bb;
+mediaviewControlFg: macWhite;
+mediaviewCaptionBg: #000000aa;
+mediaviewCaptionFg: macWhite;
+mediaviewTextLinkFg: macCyan;
+mediaviewSaveMsgBg: toastBg;
+mediaviewSaveMsgFg: toastFg;
+mediaviewPlaybackActive: macBlue;
+mediaviewPlaybackInactive: #ffffff30;
+mediaviewPlaybackActiveOver: macLightBlue;
+mediaviewPlaybackInactiveOver: #ffffff50;
+mediaviewPlaybackProgressFg: macWhite;
+mediaviewPlaybackIconFg: macWhite;
+mediaviewPlaybackIconFgOver: macLightBlue;
+mediaviewPipControlsFg: macWhite;
+mediaviewPipControlsFgOver: macBlue;
+mediaviewPipFade: #000000aa;
+mediaviewPipPlaybackActive: macBlue;
+mediaviewPipPlaybackInactive: #ffffff30;
+mediaviewTransparentBg: #000000;
+mediaviewTransparentFg: #666666;
+notificationBg: #252528ee;
+
+// --- Sidebar Folder Tabs (Far Left Icons) ---
+sideBarBg: macDarkerBg;
+sideBarBgActive: macCardBg;
+sideBarBgRipple: rippleLight;
+sideBarTextFg: macMutedFg;
+sideBarTextFgActive: macWhite;
+sideBarIconFg: macMutedFg;
+sideBarIconFgActive: macBlue;
+sideBarBadgeBg: macBlue;
+sideBarBadgeBgMuted: #3a3a3c;
+sideBarBadgeFg: macWhite;
+
+filterInputInactiveBg: #ffffff0a;
+profileVerifiedCheckBg: macBlue;
+historyReplyIconFg: macBlue;
+historyToDownBg: #252528cc;
