@@ -79,7 +79,26 @@ if command -v pacman >/dev/null 2>&1 && command -v sushi >/dev/null 2>&1; then
   sudo pacman -S --noconfirm sushi 2>/dev/null || true
 fi
 
-# 6. Remove theme files and switch to an Omarchy default theme
+# 6. Remove macOS Now Playing plugin
+rm -rf "$HOME/.config/omarchy/plugins/macos.nowplaying"
+if [[ -f "$HOME/.config/omarchy/shell.json" ]]; then
+  python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    data["bar"]["layout"]["right"] = [item for item in right if item.get("id") != "macos.nowplaying"]
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$HOME/.config/omarchy/shell.json" 2>/dev/null || true
+  omarchy restart shell 2>/dev/null || true
+fi
+
+# 7. Remove theme files and switch to an Omarchy default theme
 echo -e "${BLUE}==>${NC} Removing theme files..."
 omarchy theme remove macos 2>/dev/null || rm -rf "$HOME/.config/omarchy/themes/macos"
 

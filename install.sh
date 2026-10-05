@@ -168,7 +168,35 @@ EOF
   hyprctl plugin load "$PLUGINS_DIR/dynamic-cursors.so" 2>/dev/null || true
 fi
 
+# 6. Setup macOS "Now Playing" Menu Bar Widget
+SHELL_PLUGINS_DIR="$HOME/.config/omarchy/plugins"
+if [[ -d "$THEME_DIR/plugins/macos.nowplaying" ]]; then
+  echo -e "${BLUE}==>${NC} Installing macOS Now Playing menu bar widget..."
+  mkdir -p "$SHELL_PLUGINS_DIR/macos.nowplaying"
+  cp -rf "$THEME_DIR/plugins/macos.nowplaying/"* "$SHELL_PLUGINS_DIR/macos.nowplaying/"
+
+  SHELL_CONFIG="$HOME/.config/omarchy/shell.json"
+  if [[ -f "$SHELL_CONFIG" ]] && ! grep -q "macos.nowplaying" "$SHELL_CONFIG"; then
+    python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    if not any(item.get("id") == "macos.nowplaying" for item in right):
+        idx = next((i for i, item in enumerate(right) if item.get("id") in ("omarchy.bluetooth", "omarchy.audio")), len(right))
+        right.insert(idx, {"id": "macos.nowplaying"})
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$SHELL_CONFIG" 2>/dev/null || true
+    omarchy restart shell 2>/dev/null || true
+  fi
+fi
+
 # Reload Hyprland
 hyprctl reload >/dev/null 2>&1 || true
 
-echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, and dynamic cursor setup complete! 🎉"
+echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, dynamic cursor, and Now Playing setup complete! 🎉"
