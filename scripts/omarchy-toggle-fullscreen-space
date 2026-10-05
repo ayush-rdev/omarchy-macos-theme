@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+
+STATE_FILE = "/tmp/hypr_macos_spaces_state.json"
+
+def get_state():
+    if os.path.exists(STATE_FILE):
+        try:
+            with open(STATE_FILE, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_state(state):
+    try:
+        with open(STATE_FILE, "w") as f:
+            json.dump(state, f)
+    except Exception:
+        pass
+
+def main():
+    try:
+        active = json.loads(subprocess.check_output(["hyprctl", "activewindow", "-j"], text=True))
+        clients = json.loads(subprocess.check_output(["hyprctl", "clients", "-j"], text=True))
+        workspaces = json.loads(subprocess.check_output(["hyprctl", "workspaces", "-j"], text=True))
+    except Exception:
+        subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.fullscreen({ mode = 'maximized' })"])
+        return
+
+    addr = active.get("address")
+    if not addr:
+        return
+
+    cur_ws = active.get("workspace", {}).get("id")
+    is_fullscreen = (active.get("fullscreen", 0) != 0)
+    state = get_state()
+
+    # Clean stale entries
+    valid_addrs = {c.get("address") for c in clients}
+    state = {k: v for k, v in state.items() if k in valid_addrs}
+
+    orig_ws = state.get(addr)
+
+    if orig_ws is not None:
+        # Currently in a dedicated fullscreen space -> Return to original workspace
+        state.pop(addr, None)
+        save_state(state)
+
+        # Unfullscreen first if needed
+        if is_fullscreen:
+            subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.fullscreen({ mode = 'maximized' })"])
+
+        # Move back to original desktop workspace
+        subprocess.run(["hyprctl", "dispatch", f"hl.dsp.window.move({{ workspace = '{orig_ws}' }})"])
+    else:
+        # Check if there are other windows on this workspace
+        ws_windows = [c for c in clients if c.get("workspace", {}).get("id") == cur_ws and c.get("address") != addr]
+
+        if ws_windows:
+            # Entering dedicated space from a shared workspace:
+            state[addr] = cur_ws
+            save_state(state)
+
+            # Find next free positive workspace ID
+            used_ws = {w.get("id") for w in workspaces if w.get("id", 0) > 0}
+            target_ws = 1
+            while target_ws in used_ws:
+                target_ws += 1
+
+            # Move window to its own space and switch view smoothly.
+            # In Hyprland, a single window on its workspace fills the entire screen automatically,
+            # so we avoid calling mode='maximized' which triggers the jarring pop-in resize!
+            subprocess.run(["hyprctl", "dispatch", f"hl.dsp.window.move({{ workspace = '{target_ws}' }})"])
+        else:
+            # Window is already alone on its workspace: toggle normal fullscreen/maximized
+            subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.fullscreen({ mode = 'maximized' })"])
+
+if __name__ == "__main__":
+    main()

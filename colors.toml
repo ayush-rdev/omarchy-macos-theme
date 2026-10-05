@@ -34,6 +34,6 @@ bright_cyan = "#70d7ff"
 bright_blue = "#409cff"
 bright_magenta = "#da8fff"
 
-# macOS subtle 1px Retina rim: translucent Apple Blue to Cyan glow on active, soft glass on inactive
-hyprland_active_border = "rgba(0a84ffb8) rgba(64d2ff98) 45deg"
-hyprland_inactive_border = "rgba(ffffff12)"
+# Authentic macOS subtle 1px Retina glass rim: soft translucent glass reflection on active, subtle dark glass on inactive
+hyprland_active_border = "rgba(ffffff28)"
+hyprland_inactive_border = "rgba(ffffff10)"

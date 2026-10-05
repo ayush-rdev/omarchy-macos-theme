@@ -12,8 +12,8 @@ size-horizontal  = 26
 size-vertical    = 28
 
 [hyprland]
-active-border            = "#0a84ff #64d2ff 45deg"
-active-border-foreground = "#0a84ff"
+active-border            = "#ffffff28"
+active-border-foreground = "#ffffff28"
 
 [controls]
 normal-color              = "#f5f5f7"

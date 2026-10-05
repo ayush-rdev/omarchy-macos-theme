@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+
+STATE_FILE = "/tmp/hypr_scratchpad_history.json"
+
+def get_history():
+    if os.path.exists(STATE_FILE):
+        try:
+            with open(STATE_FILE, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+def save_history(h):
+    try:
+        with open(STATE_FILE, "w") as f:
+            json.dump(h, f)
+    except Exception:
+        pass
+
+def hide_active():
+    try:
+        active = json.loads(subprocess.check_output(["hyprctl", "activewindow", "-j"], text=True))
+    except Exception:
+        return
+
+    addr = active.get("address")
+    cur_ws = active.get("workspace", {}).get("id")
+    if not addr or cur_ws is None or cur_ws < 0:
+        return
+
+    history = get_history()
+    # Save address and original workspace
+    history = [item for item in history if item.get("address") != addr]
+    history.append({"address": addr, "workspace": cur_ws})
+    save_history(history)
+
+    # Move to scratchpad silently
+    subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.move({ workspace = 'special:scratchpad', follow = false })"])
+
+def unhide_last():
+    try:
+        clients = json.loads(subprocess.check_output(["hyprctl", "clients", "-j"], text=True))
+        active = json.loads(subprocess.check_output(["hyprctl", "activewindow", "-j"], text=True))
+        current_ws = active.get("workspace", {}).get("id", 1)
+        if current_ws < 0:
+            current_ws = 1
+    except Exception:
+        current_ws = 1
+        clients = []
+
+    # Find all windows currently in special:scratchpad
+    scratchpad_clients = [c for c in clients if c.get("workspace", {}).get("id") == -98]
+    if not scratchpad_clients:
+        return
+
+    history = get_history()
+    target_addr = None
+
+    # Pick the most recently hidden window that is still in scratchpad
+    while history:
+        last = history.pop()
+        addr = last.get("address")
+        if any(c.get("address") == addr for c in scratchpad_clients):
+            target_addr = addr
+            break
+
+    # If history didn't match, pick the first available scratchpad client
+    if not target_addr:
+        target_addr = scratchpad_clients[0].get("address")
+
+    save_history(history)
+
+    # Move window back onto current workspace, focus it, and bring to top
+    subprocess.run(["hyprctl", "dispatch", f"hl.dsp.window.move({{ address = '{target_addr}', workspace = '{current_ws}' }})"])
+    subprocess.run(["hyprctl", "dispatch", f"hl.dsp.focus({{ window = 'address:{target_addr}' }})"])
+    subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.bring_to_top()"])
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "unhide":
+        unhide_last()
+    else:
+        hide_active()
