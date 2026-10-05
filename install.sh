@@ -108,6 +108,17 @@ if [[ -f "$HYPR_INPUT" ]] && ! grep -q "toggle-window-switcher" "$HYPR_INPUT"; t
   cat << 'EOF' >> "$HYPR_INPUT"
 
 -- macOS Touchpad gestures (3-finger swipe to slide spaces, 3-finger swipe up for window switcher, 3-finger swipe down to close window)
+hl.config({
+  input = {
+    follow_mouse = 1,
+    mouse_refocus = false,
+    special_fallthrough = true,
+  },
+  cursor = {
+    no_warps = true,
+  },
+})
+
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 hl.gesture({
   fingers = 3,
