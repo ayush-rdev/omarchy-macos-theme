@@ -191,7 +191,34 @@ except Exception:
   fi
 fi
 
+# 7. Setup macOS "Activity Monitor" (System Stats) Widget
+if [[ -d "$THEME_DIR/plugins/macos.stats" ]]; then
+  echo -e "${BLUE}==>${NC} Installing macOS Activity Monitor stats widget..."
+  mkdir -p "$SHELL_PLUGINS_DIR/macos.stats"
+  cp -rf "$THEME_DIR/plugins/macos.stats/"* "$SHELL_PLUGINS_DIR/macos.stats/"
+
+  SHELL_CONFIG="$HOME/.config/omarchy/shell.json"
+  if [[ -f "$SHELL_CONFIG" ]] && ! grep -q "macos.stats" "$SHELL_CONFIG"; then
+    python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    if not any(item.get("id") == "macos.stats" for item in right):
+        idx = next((i for i, item in enumerate(right) if item.get("id") in ("omarchy.monitor", "omarchy.power")), len(right))
+        right.insert(idx, {"id": "macos.stats"})
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$SHELL_CONFIG" 2>/dev/null || true
+    omarchy restart shell 2>/dev/null || true
+  fi
+fi
+
 # Reload Hyprland
 hyprctl reload >/dev/null 2>&1 || true
 
-echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, dynamic cursor, and Now Playing setup complete! 🎉"
+echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, dynamic cursor, Now Playing, and Stats setup complete! 🎉"

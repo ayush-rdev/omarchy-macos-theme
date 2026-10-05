@@ -83,8 +83,8 @@ if command -v pacman >/dev/null 2>&1 && command -v sushi >/dev/null 2>&1; then
   sudo pacman -S --noconfirm sushi 2>/dev/null || true
 fi
 
-# 6. Remove macOS Now Playing plugin
-rm -rf "$HOME/.config/omarchy/plugins/macos.nowplaying"
+# 6. Remove macOS Now Playing and Stats plugins
+rm -rf "$HOME/.config/omarchy/plugins/macos.nowplaying" "$HOME/.config/omarchy/plugins/macos.stats"
 if [[ -f "$HOME/.config/omarchy/shell.json" ]]; then
   python3 -c '
 import json, sys
@@ -93,7 +93,7 @@ try:
     with open(path, "r") as f:
         data = json.load(f)
     right = data.get("bar", {}).get("layout", {}).get("right", [])
-    data["bar"]["layout"]["right"] = [item for item in right if item.get("id") != "macos.nowplaying"]
+    data["bar"]["layout"]["right"] = [item for item in right if item.get("id") not in ("macos.nowplaying", "macos.stats")]
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
 except Exception:

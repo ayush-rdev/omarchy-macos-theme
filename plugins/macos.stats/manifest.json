@@ -1,0 +1,8 @@
+{
+  "id": "macos.stats",
+  "name": "System Stats (Activity Monitor)",
+  "description": "Minimalist macOS-style hardware activity monitor for CPU, RAM, GPU, Temperatures, and Disk",
+  "version": "1.0.0",
+  "entrypoint": "BarWidget.qml",
+  "author": "parixiit"
+}
