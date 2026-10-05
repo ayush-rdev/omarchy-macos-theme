@@ -228,22 +228,48 @@ BarWidget {
               readonly property bool needsScroll: implicitWidth > titleContainer.width
               readonly property real overflowDistance: Math.max(0, implicitWidth - titleContainer.width)
 
-              SequentialAnimation on x {
+              x: 0
+
+              SequentialAnimation {
+                id: titleAnim
                 running: titleText.needsScroll && root.popupOpen
                 loops: Animation.Infinite
 
+                NumberAnimation { target: titleText; property: "x"; to: 0; duration: 0 }
                 PauseAnimation { duration: 1800 }
                 NumberAnimation {
+                  target: titleText
+                  property: "x"
                   to: -titleText.overflowDistance
                   duration: Math.max(2500, titleText.overflowDistance * 35)
                   easing.type: Easing.InOutQuad
                 }
                 PauseAnimation { duration: 1800 }
                 NumberAnimation {
+                  target: titleText
+                  property: "x"
                   to: 0
                   duration: Math.max(2500, titleText.overflowDistance * 35)
                   easing.type: Easing.InOutQuad
                 }
+              }
+
+              Connections {
+                target: root
+                function onPopupOpenChanged() {
+                  if (root.popupOpen) {
+                    titleText.x = 0
+                    titleAnim.restart()
+                  } else {
+                    titleAnim.stop()
+                    titleText.x = 0
+                  }
+                }
+              }
+
+              onTextChanged: {
+                titleText.x = 0
+                titleAnim.restart()
               }
             }
           }
@@ -266,22 +292,48 @@ BarWidget {
               readonly property bool needsScroll: implicitWidth > artistContainer.width
               readonly property real overflowDistance: Math.max(0, implicitWidth - artistContainer.width)
 
-              SequentialAnimation on x {
+              x: 0
+
+              SequentialAnimation {
+                id: artistAnim
                 running: artistText.needsScroll && root.popupOpen
                 loops: Animation.Infinite
 
+                NumberAnimation { target: artistText; property: "x"; to: 0; duration: 0 }
                 PauseAnimation { duration: 2000 }
                 NumberAnimation {
+                  target: artistText
+                  property: "x"
                   to: -artistText.overflowDistance
                   duration: Math.max(2500, artistText.overflowDistance * 35)
                   easing.type: Easing.InOutQuad
                 }
                 PauseAnimation { duration: 2000 }
                 NumberAnimation {
+                  target: artistText
+                  property: "x"
                   to: 0
                   duration: Math.max(2500, artistText.overflowDistance * 35)
                   easing.type: Easing.InOutQuad
                 }
+              }
+
+              Connections {
+                target: root
+                function onPopupOpenChanged() {
+                  if (root.popupOpen) {
+                    artistText.x = 0
+                    artistAnim.restart()
+                  } else {
+                    artistAnim.stop()
+                    artistText.x = 0
+                  }
+                }
+              }
+
+              onTextChanged: {
+                artistText.x = 0
+                artistAnim.restart()
               }
             }
           }
