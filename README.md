@@ -1,107 +1,111 @@
 # macOS Sequoia Theme for Omarchy
 
-An authentic Apple macOS Sequoia experience crafted for the **Omarchy Hyprland Desktop**, combining translucent frosted glass surfaces, subtle Retina 1px glass rim borders, Apple spring animation physics, native macOS Spaces, fluid gestures, and dynamic cursor magnification.
+An authentic macOS Sequoia theme for the **Omarchy Hyprland Desktop**, featuring translucent frosted glass surfaces, subtle 1px Retina glass rim borders, Apple spring animation physics, native macOS Spaces, fluid gestures, and dynamic cursor magnification.
 
 ![Preview](preview.png)
 
 ---
 
-## 🌟 What Makes This Theme Authentic
+## Features
 
-* **Glass Hairline Borders (Retina 1px)**: Replaces harsh neon borders with subtle translucent glass reflection (`rgba(ffffff28)` active, `rgba(ffffff10)` inactive) designed to blend with soft 36px macOS drop shadows.
-* **Apple Spring & Deceleration Physics**: Custom fluid cubic-bezier curves (`macEase`, `macSpring`, `macSpace`) matching macOS Mission Control and Spaces transitions.
-* **macOS "Shake to Find" Dynamic Cursor**: Rapidly shaking your mouse dynamically enlarges the cursor to find it easily, then smoothly scales back down with zero wobble or tilt distortion.
-* **Native macOS Spaces Workflow**: Dedicated fullscreen spaces that don't resize your window awkwardly. When a fullscreen app is closed, the space automatically destroys itself and returns you to your previous desktop.
-* **Touchpad Gestures**: Natural 3-finger horizontal swipes to glide between spaces, and 3-finger swipe up to reveal open windows.
-* **Curated 4K Apple Wallpapers**: Dynamic light and dark 4K wallpapers from macOS Sequoia, Sonoma, Ventura, Monterey, and Big Sur.
+- **Glass Hairline Borders (1px Retina)**: Soft translucent glass reflection (`rgba(ffffff28)` active, `rgba(ffffff10)` inactive) that pairs naturally with deep macOS drop shadows.
+- **Apple Spring & Deceleration Physics**: Custom fluid cubic-bezier curves (`macEase`, `macSpring`, `macSpace`) matching macOS Mission Control and Spaces transitions.
+- **macOS "Shake to Find" Dynamic Cursor**: Magnifies the cursor when shaken rapidly across the display and smoothly scales down when stationary, with zero tilt or distortion.
+- **Native macOS Spaces Workflow**: Dedicated fullscreen spaces with zero window resize jitter. When a dedicated space window closes, the space automatically destroys itself and returns to your previous active workspace.
+- **Touchpad Gestures**: 3-finger horizontal swipe to slide between spaces, and 3-finger swipe up to open the window switcher.
+- **Curated 4K Apple Wallpapers**: Dynamic light and dark 4K wallpapers from macOS Sequoia, Sonoma, Ventura, Monterey, and Big Sur.
 
 ---
 
-## ⚡ Quick 1-Command Automatic Install (Recommended)
+## Quick Installation
 
-Install everything automatically in one single command (theme, helper scripts, gestures, shortcuts, dynamic cursor plugin, and spaces daemon):
+Run the automated installer script to set up the theme, helper scripts, gestures, shortcuts, dynamic cursor plugin, and spaces background daemon:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/master/install.sh | bash
 ```
 
-*(Or if you cloned the repository locally: `./install.sh`)*
+*Or from a local clone:*
+```bash
+./install.sh
+```
 
 ---
 
-## 🕹️ How to Use It (macOS Workflow Guide)
+## Usage & Keybindings
 
-### 1. Spaces & Fullscreen Experience
-| Action | Shortcut / Gesture | What Happens |
+### Spaces & Fullscreen
+| Action | Keybinding / Gesture | Description |
 | :--- | :--- | :--- |
-| **Enter Dedicated Space** | <kbd>Win</kbd> + <kbd>F</kbd> *(or 3-finger click)* | Moves the active app into its own clean fullscreen space with zero resize bounce. |
-| **Exit Dedicated Space** | <kbd>Win</kbd> + <kbd>F</kbd> | Returns the app back to its previous workspace. |
-| **Auto-Destruction on Close** | <kbd>Win</kbd> + <kbd>W</kbd> or <kbd>Cmd</kbd> + <kbd>Q</kbd> | If you close the app while in its dedicated space, the space is destroyed and you automatically slide back to your previous space. |
-| **Standard Fullscreen** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | Classic fullscreen mode on the current workspace. |
+| **Enter Dedicated Space** | `Super + F` *(or 3-finger click)* | Moves the focused window into an empty workspace as a dedicated space. |
+| **Exit Dedicated Space** | `Super + F` | Returns the window back to its origin workspace. |
+| **Auto-Destruction on Close** | `Super + W` / `Super + Alt + W` | Closing the window automatically destroys the space and returns focus to your previous workspace. |
+| **Standard Fullscreen** | `Super + Alt + F` | Toggles traditional fullscreen within the current workspace. |
 
-### 2. Smooth Navigation & Gestures
-| Action | Shortcut / Gesture | What Happens |
+### Navigation & Gestures
+| Action | Keybinding / Gesture | Description |
 | :--- | :--- | :--- |
-| **Slide Between Spaces** | **3-Finger Swipe Left / Right** | Silky-smooth horizontal slide between workspaces. |
-| **Next Space** | <kbd>Win</kbd> + <kbd>Tab</kbd> | Rapidly cycle to the next workspace. |
-| **Spotlight Window Switcher**| **3-Finger Swipe Up** | Pops up the Spotlight-style window menu to jump to any window. |
-| **Move Window & Follow** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>1..10</kbd> | Sends window to space 1–10 and switches view with it. |
-| **Move Window Silently** | <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>1..10</kbd>| Sends window to space 1–10 without leaving your current workspace. |
+| **Slide Workspaces** | **3-Finger Swipe Horizontal** | Slides horizontally across active spaces. |
+| **Next Workspace** | `Super + Tab` | Cycles to the next workspace. |
+| **Window Switcher** | **3-Finger Swipe Up** | Opens the Spotlight-style window menu. |
+| **Move Window & Follow** | `Super + Alt + [1-9]` | Moves active window to workspace `1-9` and switches focus. |
+| **Move Window Silently** | `Super + Shift + [1-9]` | Moves active window to workspace `1-9` without switching focus. |
 
-### 3. Window Management & Productivity
-| Action | Shortcut | What Happens |
+### Window Management
+| Action | Keybinding | Description |
 | :--- | :--- | :--- |
-| **Hide Window** | <kbd>Win</kbd> + <kbd>H</kbd> | Seamlessly hides the active window into the scratchpad. |
-| **Unhide Window** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>H</kbd> | Restores hidden windows onto the active workspace so `Alt + Tab` and Spotlight switcher see them immediately. |
-| **Close All in Workspace** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>W</kbd> | Instantly closes all windows open in your active workspace only. |
-| **Clipboard History** | <kbd>Win</kbd> + <kbd>V</kbd> | Opens the Omarchy frosted-glass clipboard history panel. |
-| **Capture Menu** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>C</kbd> | Interactive screenshot and screen record utility. |
-| **Extract Text (OCR)** | <kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>Print</kbd> | Drag an area to copy its text directly to your clipboard. |
+| **Hide Window** | `Super + H` | Sends active window to scratchpad. |
+| **Unhide Window** | `Super + Alt + H` | Restores window onto the current active workspace. |
+| **Close All in Workspace** | `Super + Alt + W` | Closes all open windows on the active workspace. |
+| **Clipboard History** | `Super + V` | Opens the clipboard manager. |
+| **Capture Menu** | `Super + Alt + C` | Opens the screenshot and screen recording menu. |
+| **Extract Text (OCR)** | `Super + Alt + Print` | Captures region text directly to clipboard. |
 
-### 4. Shake to Find Cursor
-* Simply give your mouse or trackpad a quick, rapid shake across the screen. The cursor smoothly enlarges up to 5.5× and gracefully shrinks back when movement calms down.
+### Shake to Find Cursor
+Shake your mouse rapidly back and forth across the screen. The pointer automatically enlarges up to 5.5× and gracefully shrinks back to default size when idle.
 
 ---
 
-## 🛠️ Manual Step-by-Step Installation
+## Manual Installation
 
-If you prefer configuring things manually:
+For manual configuration without running the installer script:
 
-### 1. Install & Apply the Theme
+### 1. Install & Apply Theme
 ```bash
 omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git
 omarchy theme set macos
 ```
 
-### 2. Install Helper Scripts
+### 2. Copy Helper Scripts
 ```bash
 cp ~/.config/omarchy/themes/macos/scripts/* ~/.local/bin/
 chmod +x ~/.local/bin/omarchy-* ~/.local/bin/toggle-window-switcher
 ```
 
-### 3. Enable the Spaces Auto-Clean Daemon
-Add the daemon to `~/.config/hypr/autostart.lua`:
+### 3. Autostart Spaces Daemon
+Add the following to `~/.config/hypr/autostart.lua`:
 ```lua
 o.launch_on_start("omarchy-spaces-listener")
 ```
 
-### 4. Enable Dynamic Cursors (Shake to Find)
-Copy the bundled plugin:
+### 4. Enable Dynamic Cursors Plugin
 ```bash
 mkdir -p ~/.config/hypr/plugins
 cp ~/.config/omarchy/themes/macos/plugins/dynamic-cursors.so ~/.config/hypr/plugins/
 ```
-Load the plugin in `~/.config/hypr/hyprland.lua`:
+
+In `~/.config/hypr/hyprland.lua`:
 ```lua
 hl.plugin.load(os.getenv("HOME") .. "/.config/hypr/plugins/dynamic-cursors.so")
 ```
-Add the wobble-free configuration to `~/.config/hypr/looknfeel.lua`:
+
+In `~/.config/hypr/looknfeel.lua`:
 ```lua
 hl.config({
   plugin = {
     dynamic_cursors = {
       enabled = true,
-      mode = "none", -- Disables tilt and wobble for clean macOS scaling
+      mode = "none",
       shake = {
         enabled = true,
         threshold = 5.0,
@@ -118,23 +122,26 @@ hl.config({
 
 ---
 
-## 📜 Helper Scripts Reference
+## Helper Scripts
 
-All scripts reside in `scripts/` and integrate directly with Hyprland's socket API:
-* **`omarchy-toggle-fullscreen-space`**: Dispatches the active window into an empty workspace with single-app full layout (avoiding jarring resize animations).
-* **`omarchy-spaces-listener`**: Background event daemon that monitors Hyprland's `closewindow` and `workspacev2` events to clean up empty spaces automatically.
-* **`omarchy-close-workspace-windows`**: Safely closes all client windows residing on the current workspace.
-* **`omarchy-window-hide`**: Wraps scratchpad hiding/unhiding cleanly into macOS `Cmd + H` muscle memory.
-* **`toggle-window-switcher`**: Renders a Spotlight-styled fuzzy searchable list of all open windows across monitors.
+The `scripts/` directory contains utilities for window management:
+- `omarchy-toggle-fullscreen-space`: Manages single-window workspaces without layout bounce.
+- `omarchy-spaces-listener`: Background daemon monitoring socket events for space cleanup and compaction.
+- `omarchy-close-workspace-windows`: Closes all windows on the active workspace.
+- `omarchy-window-hide`: Handles scratchpad show/hide routines.
+- `toggle-window-switcher`: Spotlight-style fuzzy window selector.
 
 ---
 
-## 🧹 Complete Uninstallation
+## Uninstallation
 
-To cleanly remove the theme, all helper scripts, background services, cursor plugins, and restore your system:
+To remove the theme, background services, plugins, and helper scripts:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/master/uninstall.sh | bash
 ```
 
-*(Or if running from a local clone: `./uninstall.sh`)*
+*Or from a local clone:*
+```bash
+./uninstall.sh
+```
