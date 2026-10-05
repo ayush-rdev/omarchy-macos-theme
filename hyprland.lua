@@ -146,3 +146,30 @@ hl.layer_rule({
   blur = true,
   ignore_alpha = 0.2,
 })
+
+-- macOS "Shake to Find" Cursor Magnification (if dynamic-cursors plugin is installed)
+hl.config({
+  plugin = {
+    dynamic_cursors = {
+      enabled = true,
+      mode = "none", -- Clean standard pointer behaviour
+      shake = {
+        enabled = true,
+        threshold = 5.0,  -- Trigger sensitivity
+        base = 3.5,       -- Initial magnification when shaken
+        speed = 4.0,      -- Growth rate while shaking continues
+        limit = 5.5,      -- Maximum cursor size
+        timeout = 1000,   -- Milliseconds before smoothly shrinking back
+        effects = false,  -- No distortion effects
+        ipc = false,
+      },
+      hyprcursor = {
+        enabled = true,
+        nearest = true,
+        resolution = -1,
+        fallback = "clientside",
+      },
+    },
+  },
+})
+
