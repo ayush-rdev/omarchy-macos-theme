@@ -387,13 +387,14 @@ BarWidget {
       // Media controls row (Previous, Play/Pause, Next)
       Row {
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: Style.space(12)
+        spacing: Style.space(14)
 
         Button {
           iconText: "󰒮"
           foreground: root.bar.foreground
-          horizontalPadding: Style.space(14)
-          verticalPadding: Style.spacing.controlPaddingY
+          iconSize: Style.font.iconLarge
+          horizontalPadding: Style.space(16)
+          verticalPadding: Style.space(8)
           enabled: root.activePlayer && (root.activePlayer.canGoPrevious !== false)
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doPrevious()
@@ -402,9 +403,9 @@ BarWidget {
         Button {
           iconText: root.isPlaying ? "󰏤" : "󰐊"
           foreground: root.bar.foreground
-          horizontalPadding: Style.space(22)
-          verticalPadding: Style.spacing.controlPaddingY
-          iconSize: Style.font.iconLarge
+          iconSize: Style.font.display
+          horizontalPadding: Style.space(24)
+          verticalPadding: Style.space(8)
           enabled: root.activePlayer !== null
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doPlayPause()
@@ -413,8 +414,9 @@ BarWidget {
         Button {
           iconText: "󰒭"
           foreground: root.bar.foreground
-          horizontalPadding: Style.space(14)
-          verticalPadding: Style.spacing.controlPaddingY
+          iconSize: Style.font.iconLarge
+          horizontalPadding: Style.space(16)
+          verticalPadding: Style.space(8)
           enabled: root.activePlayer && (root.activePlayer.canGoNext !== false)
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doNext()
