@@ -93,5 +93,6 @@ end
 ## Helper Scripts (`scripts/`)
 Copy the scripts to `~/.local/bin/` to enable dedicated Spaces and Hide/Unhide workflows:
 - `omarchy-toggle-fullscreen-space`: Moves active window into its own dedicated space (zero resize bounce) and returns it back on exit.
+- `omarchy-spaces-listener`: Background daemon that automatically returns you to your previous workspace when a fullscreen space window is closed, just like macOS destroying the space.
 - `omarchy-window-hide`: Properly hides windows to scratchpad and unhides them onto the active workspace so `Alt + Tab` and Spotlight switcher see them immediately.
 - `toggle-window-switcher`: Spotlight-style window menu for all open windows.

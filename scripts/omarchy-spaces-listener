@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+import json
+import os
+import socket
+import subprocess
+import sys
+import time
+
+STATE_FILE = "/tmp/hypr_macos_spaces_state.json"
+
+def get_state():
+    if os.path.exists(STATE_FILE):
+        try:
+            with open(STATE_FILE, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_state(state):
+    try:
+        with open(STATE_FILE, "w") as f:
+            json.dump(state, f)
+    except Exception:
+        pass
+
+def handle_close_window(closed_addr):
+    # Normalize address
+    if not closed_addr.startswith("0x"):
+        closed_addr = "0x" + closed_addr
+
+    state = get_state()
+    orig_ws = state.pop(closed_addr, None)
+    save_state(state)
+
+    # Allow Hyprland state to settle
+    time.sleep(0.05)
+
+    try:
+        clients = json.loads(subprocess.check_output(["hyprctl", "clients", "-j"], text=True))
+        active_ws_info = json.loads(subprocess.check_output(["hyprctl", "activeworkspace", "-j"], text=True))
+        cur_ws_id = active_ws_info.get("id")
+    except Exception:
+        return
+
+    # Count how many windows remain on current workspace
+    remaining = [c for c in clients if c.get("workspace", {}).get("id") == cur_ws_id]
+
+    if len(remaining) == 0:
+        # Current workspace is completely empty!
+        # Target destination:
+        target = orig_ws
+        if target is None:
+            # Fallback to nearest populated workspace or workspace 1
+            populated = sorted(list({c.get("workspace", {}).get("id") for c in clients if c.get("workspace", {}).get("id", 0) > 0}))
+            if populated:
+                target = populated[-1]
+            else:
+                target = 1
+
+        if target != cur_ws_id:
+            subprocess.run(["hyprctl", "dispatch", f"hl.dsp.workspace({{ workspace = '{target}' }})"])
+
+def main():
+    xdg_runtime = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
+    his = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+    if not his:
+        try:
+            his = subprocess.check_output(["hyprctl", "instances"], text=True).splitlines()[0].strip()
+        except Exception:
+            pass
+
+    if not his:
+        sys.exit(1)
+
+    sock_path = os.path.join(xdg_runtime, "hypr", his, ".socket2.sock")
+    if not os.path.exists(sock_path):
+        sys.exit(1)
+
+    client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    client.connect(sock_path)
+
+    buf = ""
+    while True:
+        data = client.recv(4096)
+        if not data:
+            break
+        buf += data.decode("utf-8", errors="replace")
+        while "\n" in buf:
+            line, buf = buf.split("\n", 1)
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith("closewindow>>"):
+                closed_addr = line.split(">>", 1)[1].strip()
+                handle_close_window(closed_addr)
+
+if __name__ == "__main__":
+    main()
