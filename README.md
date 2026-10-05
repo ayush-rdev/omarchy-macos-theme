@@ -49,6 +49,7 @@ curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/mast
 | **Slide Workspaces** | **3-Finger Swipe Horizontal** | Slides horizontally across active spaces. |
 | **Next Workspace** | `Super + Tab` | Cycles to the next workspace. |
 | **Window Switcher** | **3-Finger Swipe Up** | Opens the Spotlight-style window menu. |
+| **Close Active Window** | **3-Finger Swipe Down** / `Super + W` | Closes / dismisses the focused window. |
 | **Move Window & Follow** | `Super + Alt + [1-9]` | Moves active window to workspace `1-9` and switches focus. |
 | **Move Window Silently** | `Super + Shift + [1-9]` | Moves active window to workspace `1-9` without switching focus. |
 

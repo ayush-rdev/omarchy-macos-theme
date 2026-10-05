@@ -98,13 +98,20 @@ if [[ -f "$HYPR_INPUT" ]] && ! grep -q "toggle-window-switcher" "$HYPR_INPUT"; t
   echo -e "${BLUE}==>${NC} Configuring macOS Touchpad Gestures..."
   cat << 'EOF' >> "$HYPR_INPUT"
 
--- macOS Touchpad gestures (3-finger swipe to slide spaces, 3-finger swipe up for window switcher)
+-- macOS Touchpad gestures (3-finger swipe to slide spaces, 3-finger swipe up for window switcher, 3-finger swipe down to close window)
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 hl.gesture({
   fingers = 3,
   direction = "up",
   action = function()
     hl.dispatch(hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/toggle-window-switcher"))
+  end,
+})
+hl.gesture({
+  fingers = 3,
+  direction = "down",
+  action = function()
+    hl.dispatch(hl.dsp.window.close())
   end,
 })
 EOF
