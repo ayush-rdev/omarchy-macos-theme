@@ -126,3 +126,15 @@ All scripts reside in `scripts/` and integrate directly with Hyprland's socket A
 * **`omarchy-close-workspace-windows`**: Safely closes all client windows residing on the current workspace.
 * **`omarchy-window-hide`**: Wraps scratchpad hiding/unhiding cleanly into macOS `Cmd + H` muscle memory.
 * **`toggle-window-switcher`**: Renders a Spotlight-styled fuzzy searchable list of all open windows across monitors.
+
+---
+
+## 🧹 Complete Uninstallation
+
+To cleanly remove the theme, all helper scripts, background services, cursor plugins, and restore your system:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/master/uninstall.sh | bash
+```
+
+*(Or if running from a local clone: `./uninstall.sh`)*
