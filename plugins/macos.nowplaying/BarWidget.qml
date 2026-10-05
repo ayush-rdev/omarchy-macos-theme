@@ -69,8 +69,9 @@ BarWidget {
     if (!url) return ""
     var str = String(url)
     if (str.indexOf("googleusercontent.com") !== -1 || str.indexOf("ggpht.com") !== -1) {
-      str = str.replace(/=w\d+-h\d+.*$/, "=w800-h800-l90-rj")
-      str = str.replace(/=s\d+.*$/, "=s800")
+      // 256px is 3x retina for our 84px container, downloads in milliseconds
+      str = str.replace(/=w\d+-h\d+.*$/, "=w256-h256-l90-rj")
+      str = str.replace(/=s\d+.*$/, "=s256")
     }
     return str
   }
