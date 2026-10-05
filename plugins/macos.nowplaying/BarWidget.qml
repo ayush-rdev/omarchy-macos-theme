@@ -195,25 +195,81 @@ BarWidget {
           anchors.verticalCenter: parent.verticalCenter
           spacing: Style.space(4)
 
-          Text {
+          Item {
+            id: titleContainer
             width: parent.width
-            textFormat: Text.PlainText
-            text: root.activePlayer && root.activePlayer.trackTitle ? root.activePlayer.trackTitle : "No media playing"
-            color: root.bar.foreground
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.subtitle
-            font.bold: true
-            elide: Text.ElideRight
+            height: titleText.implicitHeight
+            clip: true
+
+            Text {
+              id: titleText
+              textFormat: Text.PlainText
+              text: root.activePlayer && root.activePlayer.trackTitle ? root.activePlayer.trackTitle : "No media playing"
+              color: root.bar.foreground
+              font.family: root.bar.fontFamily
+              font.pixelSize: Style.font.subtitle
+              font.bold: true
+              anchors.verticalCenter: parent.verticalCenter
+
+              readonly property bool needsScroll: implicitWidth > titleContainer.width
+              readonly property real overflowDistance: Math.max(0, implicitWidth - titleContainer.width)
+
+              SequentialAnimation on x {
+                running: titleText.needsScroll && root.popupOpen
+                loops: Animation.Infinite
+
+                PauseAnimation { duration: 1800 }
+                NumberAnimation {
+                  to: -titleText.overflowDistance
+                  duration: Math.max(2500, titleText.overflowDistance * 35)
+                  easing.type: Easing.InOutQuad
+                }
+                PauseAnimation { duration: 1800 }
+                NumberAnimation {
+                  to: 0
+                  duration: Math.max(2500, titleText.overflowDistance * 35)
+                  easing.type: Easing.InOutQuad
+                }
+              }
+            }
           }
 
-          Text {
+          Item {
+            id: artistContainer
             width: parent.width
-            textFormat: Text.PlainText
-            text: root.activePlayer && root.activePlayer.trackArtist ? root.activePlayer.trackArtist : "Play music or video to see info"
-            color: Qt.darker(root.bar.foreground, 1.3)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            elide: Text.ElideRight
+            height: artistText.implicitHeight
+            clip: true
+
+            Text {
+              id: artistText
+              textFormat: Text.PlainText
+              text: root.activePlayer && root.activePlayer.trackArtist ? root.activePlayer.trackArtist : "Play music or video to see info"
+              color: Qt.darker(root.bar.foreground, 1.3)
+              font.family: root.bar.fontFamily
+              font.pixelSize: Style.font.bodySmall
+              anchors.verticalCenter: parent.verticalCenter
+
+              readonly property bool needsScroll: implicitWidth > artistContainer.width
+              readonly property real overflowDistance: Math.max(0, implicitWidth - artistContainer.width)
+
+              SequentialAnimation on x {
+                running: artistText.needsScroll && root.popupOpen
+                loops: Animation.Infinite
+
+                PauseAnimation { duration: 2000 }
+                NumberAnimation {
+                  to: -artistText.overflowDistance
+                  duration: Math.max(2500, artistText.overflowDistance * 35)
+                  easing.type: Easing.InOutQuad
+                }
+                PauseAnimation { duration: 2000 }
+                NumberAnimation {
+                  to: 0
+                  duration: Math.max(2500, artistText.overflowDistance * 35)
+                  easing.type: Easing.InOutQuad
+                }
+              }
+            }
           }
         }
       }
