@@ -71,6 +71,9 @@ fi
 
 if [[ -f "$HYPR_INPUT" ]]; then
   sed -i '/toggle-window-switcher/d' "$HYPR_INPUT"
+  sed -i '/macOS Touchpad gestures/d' "$HYPR_INPUT"
+  sed -i '/hl.gesture({ fingers = 3/d' "$HYPR_INPUT"
+  sed -i '/hl.dsp.window.close()/d' "$HYPR_INPUT"
 fi
 
 # 5. Restore stock GNOME Sushi if modified

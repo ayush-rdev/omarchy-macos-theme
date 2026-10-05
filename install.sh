@@ -12,13 +12,22 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}==>${NC} Installing macOS Sequoia Theme for Omarchy..."
 
 # 1. Install & set theme
-omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git 2>/dev/null || true
-omarchy theme set macos
-
 THEME_DIR="$HOME/.config/omarchy/themes/macos"
 BIN_DIR="$HOME/.local/bin"
 SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
 mkdir -p "$BIN_DIR" "$SYSTEMD_USER_DIR"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+
+if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/colors.toml" ]]; then
+  echo -e "${BLUE}==>${NC} Installing theme assets from local repository..."
+  mkdir -p "$THEME_DIR"
+  cp -rf "$SCRIPT_DIR/"* "$THEME_DIR/"
+else
+  omarchy theme install https://github.com/parixiit/omarchy-macos-theme.git 2>/dev/null || \
+  omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git 2>/dev/null || true
+fi
+omarchy theme set macos 2>/dev/null || true
 
 # 2. Check & install sushi for macOS Quick Look (Spacebar file preview)
 if ! command -v sushi >/dev/null 2>&1; then
