@@ -390,33 +390,36 @@ BarWidget {
         spacing: Style.space(14)
 
         Button {
+          anchors.verticalCenter: parent.verticalCenter
+          height: Style.space(42)
           iconText: "󰒮"
           foreground: root.bar.foreground
           iconSize: Style.font.iconLarge
           horizontalPadding: Style.space(16)
-          verticalPadding: Style.space(8)
           enabled: root.activePlayer && (root.activePlayer.canGoPrevious !== false)
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doPrevious()
         }
 
         Button {
+          anchors.verticalCenter: parent.verticalCenter
+          height: Style.space(42)
           iconText: root.isPlaying ? "󰏤" : "󰐊"
           foreground: root.bar.foreground
           iconSize: Style.font.display
           horizontalPadding: Style.space(24)
-          verticalPadding: Style.space(8)
           enabled: root.activePlayer !== null
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doPlayPause()
         }
 
         Button {
+          anchors.verticalCenter: parent.verticalCenter
+          height: Style.space(42)
           iconText: "󰒭"
           foreground: root.bar.foreground
           iconSize: Style.font.iconLarge
           horizontalPadding: Style.space(16)
-          verticalPadding: Style.space(8)
           enabled: root.activePlayer && (root.activePlayer.canGoNext !== false)
           opacity: enabled ? 1.0 : 0.4
           onClicked: root.doNext()
