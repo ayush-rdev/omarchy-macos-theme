@@ -18,10 +18,32 @@ An authentic Apple macOS Sequoia theme for the **Omarchy Hyprland Desktop**, fea
 
 ## Installation
 
+### 1. Install & Apply the Theme
 ```bash
 omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git
 omarchy theme set macos
 ```
+
+### 2. Install Helper Scripts
+Copy the bundled macOS helper scripts to your user bin directory:
+```bash
+cp ~/.config/omarchy/themes/macos/scripts/* ~/.local/bin/
+chmod +x ~/.local/bin/omarchy-* ~/.local/bin/toggle-window-switcher
+```
+
+### 3. Autostart the Spaces Daemon (`~/.config/hypr/autostart.lua`)
+Add the following line so empty fullscreen spaces automatically clean up when their window closes:
+```lua
+o.launch_on_start("omarchy-spaces-listener")
+```
+
+### 4. (Optional) macOS "Shake to Find" Dynamic Cursor
+To enable macOS cursor enlargement on rapid shaking:
+```bash
+hyprpm add https://github.com/virtcode/hypr-dynamic-cursors
+hyprpm enable dynamic-cursors
+```
+Or build from source and load `dynamic-cursors.so` via `hl.plugin.load(...)` in your `~/.config/hypr/hyprland.lua`.
 
 ---
 
