@@ -59,7 +59,7 @@ def handle_close_window(closed_addr):
                 target = 1
 
         if target != cur_ws_id:
-            subprocess.run(["hyprctl", "dispatch", f"hl.dsp.workspace({{ workspace = '{target}' }})"])
+            subprocess.run(["hyprctl", "dispatch", f"hl.dsp.focus({{ workspace = '{target}' }})"])
 
 def main():
     xdg_runtime = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
