@@ -60,6 +60,17 @@ hl.unbind("SUPER + ALT + S")
 o.bind("SUPER + H", "Hide window", "~/.local/bin/omarchy-window-hide")
 o.bind("SUPER + ALT + H", "Unhide window", "~/.local/bin/omarchy-window-hide unhide")
 
+-- Clipboard manager on Win + V
+hl.unbind("SUPER + V")
+hl.unbind("SUPER + CTRL + V")
+o.bind("SUPER + V", "Clipboard manager", "omarchy-shell shell toggle omarchy.clipboard")
+
+-- Capture Menu & OCR (remapped from Ctrl to Alt)
+hl.unbind("SUPER + CTRL + C")
+hl.unbind("SUPER + CTRL + PRINT")
+o.bind("SUPER + ALT + C", "Capture menu", "omarchy-menu toggle capture")
+o.bind("SUPER + ALT + PRINT", "Extract text (OCR) from screenshot", "omarchy-capture-text")
+
 -- Fast Workspace Navigation (Win + Tab)
 hl.unbind("SUPER + TAB")
 o.bind("SUPER + TAB", "Next workspace", hl.dsp.focus({ workspace = "e+1" }))
