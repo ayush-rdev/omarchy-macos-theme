@@ -72,6 +72,9 @@ hl.unbind("SUPER + CTRL + PRINT")
 o.bind("SUPER + ALT + C", "Capture menu", "omarchy-menu toggle capture")
 o.bind("SUPER + ALT + PRINT", "Extract text (OCR) from screenshot", "omarchy-capture-text")
 
+-- Close all windows on current workspace (Win + Alt + W)
+o.bind("SUPER + ALT + W", "Close all windows in workspace", "~/.local/bin/omarchy-close-workspace-windows")
+
 -- Fast Workspace Navigation (Win + Tab)
 hl.unbind("SUPER + TAB")
 o.bind("SUPER + TAB", "Next workspace", hl.dsp.focus({ workspace = "e+1" }))
@@ -94,5 +97,6 @@ end
 Copy the scripts to `~/.local/bin/` to enable dedicated Spaces and Hide/Unhide workflows:
 - `omarchy-toggle-fullscreen-space`: Moves active window into its own dedicated space (zero resize bounce) and returns it back on exit.
 - `omarchy-spaces-listener`: Background daemon that automatically returns you to your previous workspace when a fullscreen space window is closed, just like macOS destroying the space.
+- `omarchy-close-workspace-windows`: Closes all windows on the current workspace simultaneously.
 - `omarchy-window-hide`: Properly hides windows to scratchpad and unhides them onto the active workspace so `Alt + Tab` and Spotlight switcher see them immediately.
 - `toggle-window-switcher`: Spotlight-style window menu for all open windows.
