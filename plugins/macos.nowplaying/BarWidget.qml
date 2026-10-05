@@ -65,6 +65,16 @@ BarWidget {
     return m + ":" + (s < 10 ? "0" : "") + s
   }
 
+  function cleanArtUrl(url) {
+    if (!url) return ""
+    var str = String(url)
+    if (str.indexOf("googleusercontent.com") !== -1 || str.indexOf("ggpht.com") !== -1) {
+      str = str.replace(/=w\d+-h\d+.*$/, "=w800-h800-l90-rj")
+      str = str.replace(/=s\d+.*$/, "=s800")
+    }
+    return str
+  }
+
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
 
@@ -163,35 +173,39 @@ BarWidget {
         spacing: Style.space(12)
 
         BorderSurface {
-          width: Style.space(76)
-          height: Style.space(76)
-          radius: Style.space(10)
+          width: Style.space(84)
+          height: Style.space(84)
+          radius: Style.space(12)
           color: Style.normalFillFor(root.bar.foreground, Color.accent)
           borderSpec: Border.controlSpec("normal", root.bar.foreground, Color.accent)
+          clip: true
 
           Image {
             id: albumArt
             anchors.fill: parent
-            anchors.margins: Style.space(2)
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
-            source: root.activePlayer && root.activePlayer.trackArtUrl ? root.activePlayer.trackArtUrl : ""
+            cache: true
+            smooth: true
+            mipmap: true
+            source: root.cleanArtUrl(root.activePlayer && root.activePlayer.trackArtUrl ? root.activePlayer.trackArtUrl : "")
             visible: source !== ""
+            sourceSize: Qt.size(width * 2, height * 2)
           }
 
           Text {
             anchors.centerIn: parent
-            visible: !albumArt.visible
+            visible: !albumArt.visible || albumArt.status !== Image.Ready
             text: "󰝚"
             color: root.bar.foreground
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.displayLarge
-            opacity: 0.5
+            opacity: 0.4
           }
         }
 
         Column {
-          width: parent.width - Style.space(88)
+          width: parent.width - Style.space(96)
           anchors.verticalCenter: parent.verticalCenter
           spacing: Style.space(4)
 
