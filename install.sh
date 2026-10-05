@@ -20,7 +20,15 @@ BIN_DIR="$HOME/.local/bin"
 SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
 mkdir -p "$BIN_DIR" "$SYSTEMD_USER_DIR"
 
-# 2. Install all macOS helper scripts
+# 2. Check & install sushi for macOS Quick Look (Spacebar file preview)
+if ! command -v sushi >/dev/null 2>&1; then
+  echo -e "${BLUE}==>${NC} Installing GNOME Sushi for macOS Quick Look (Spacebar file preview)..."
+  if command -v pacman >/dev/null 2>&1; then
+    sudo pacman -S --noconfirm --needed sushi 2>/dev/null || true
+  fi
+fi
+
+# 3. Install all macOS helper scripts
 echo -e "${BLUE}==>${NC} Installing macOS helper scripts to $BIN_DIR..."
 if [[ -d "$THEME_DIR/scripts" ]]; then
   cp -f "$THEME_DIR/scripts/"* "$BIN_DIR/"

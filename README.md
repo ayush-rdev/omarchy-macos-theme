@@ -13,6 +13,7 @@ An authentic macOS Sequoia theme for the **Omarchy Hyprland Desktop**, featuring
 - **macOS "Shake to Find" Dynamic Cursor**: Magnifies the cursor when shaken rapidly across the display and smoothly scales down when stationary, with zero tilt or distortion.
 - **Native macOS Spaces Workflow**: Dedicated fullscreen spaces with zero window resize jitter. When a dedicated space window closes, the space automatically destroys itself and returns to your previous active workspace.
 - **Touchpad Gestures**: 3-finger horizontal swipe to slide between spaces, and 3-finger swipe up to open the window switcher.
+- **macOS "Quick Look" File Preview**: Tap `Spacebar` on any file (images, PDFs, documents, audio, video) in the file manager to immediately open a floating preview window, and tap `Spacebar` or `Escape` to close it.
 - **Curated 4K Apple Wallpapers**: Dynamic light and dark 4K wallpapers from macOS Sequoia, Sonoma, Ventura, Monterey, and Big Sur.
 
 ---
@@ -57,6 +58,7 @@ curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/mast
 | **Hide Window** | `Super + H` | Sends active window to scratchpad. |
 | **Unhide Window** | `Super + Alt + H` | Restores window onto the current active workspace. |
 | **Close All in Workspace** | `Super + Alt + W` | Closes all open windows on the active workspace. |
+| **Quick Look File Preview** | `Spacebar` *(in file manager)* | Previews images, PDFs, text, audio, and video instantly in a floating window. Tap `Space` or `Esc` to close. |
 | **Clipboard History** | `Super + V` | Opens the clipboard manager. |
 | **Capture Menu** | `Super + Alt + C` | Opens the screenshot and screen recording menu. |
 | **Extract Text (OCR)** | `Super + Alt + Print` | Captures region text directly to clipboard. |

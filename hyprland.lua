@@ -111,6 +111,16 @@ o.window("(Alacritty|kitty|foot)", { scroll_touchpad = 0.8 })
 o.window("(org.telegram.desktop|AyuGram)", { scroll_touchpad = 0.85 })
 o.window("org.gnome.Nautilus", { scroll_touchpad = 0.9 })
 
+-- macOS "Quick Look" file preview (GNOME Sushi / NautilusPreviewer)
+-- Floating, centered, elevated modal dialog matching native macOS Quick Look
+o.window("org.gnome.NautilusPreviewer", {
+  float = true,
+  center = true,
+  size = { 960, 680 },
+  rounding = 14,
+  opacity = "1.0 1.0",
+})
+
 -- Apple macOS fluid bezier curves and spring physics
 -- Standard macOS fluid deceleration: cubic-bezier(0.16, 1, 0.3, 1)
 hl.curve("macEase", { type = "bezier", points = { { 0.16, 1.0 }, { 0.3, 1.0 } } })
