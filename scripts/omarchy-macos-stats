@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+import json, glob, os, time
+
+res = {
+    'battery_percent': 0,
+    'battery_status': '',
+    'swap_percent': 0,
+    'hostname': os.uname().nodename,
+    'os_name': 'Omarchy Linux',
+    'uptime': '—',
+    'cpu_percent': 0,
+    'ram_used_gb': 0,
+    'ram_total_gb': 0,
+    'ram_percent': 0,
+    'disk_used_gb': 0,
+    'disk_total_gb': 0,
+    'disk_percent': 0,
+    'cpu_temp': 0,
+    'gpu_busy': 0,
+    'gpu_temp': 0
+}
+
+try:
+    with open('/etc/os-release') as f:
+        for line in f:
+            if line.startswith('PRETTY_NAME='):
+                res['os_name'] = line.split('=')[1].strip('"\n')
+except: pass
+
+try:
+    with open('/proc/uptime') as f:
+        sec = int(float(f.read().split()[0]))
+        res['uptime'] = f'{sec // 3600}h {(sec % 3600) // 60}m'
+except: pass
+
+try:
+    with open('/proc/stat') as f:
+        f1 = [float(x) for x in f.readline().split()[1:8]]
+    time.sleep(0.06)
+    with open('/proc/stat') as f:
+        f2 = [float(x) for x in f.readline().split()[1:8]]
+    d_idle = (f2[3] + f2[4]) - (f1[3] + f1[4])
+    d_tot = sum(f2) - sum(f1)
+    res['cpu_percent'] = round(max(0, min(100, 100.0 * (1.0 - d_idle / d_tot))), 1)
+except: pass
+
+try:
+    mem = {}
+    with open('/proc/meminfo') as f:
+        for line in f:
+            p = line.split(':')
+            if len(p) == 2: mem[p[0].strip()] = int(p[1].strip().split()[0])
+    tot = mem.get('MemTotal', 1)
+    avail = mem.get('MemAvailable', 1)
+    used = tot - avail
+    res['ram_total_gb'] = round(tot / 1048576, 1)
+    res['ram_used_gb'] = round(used / 1048576, 1)
+    res['ram_percent'] = int(round((used / tot) * 100))
+    swap_tot = mem.get('SwapTotal', 0)
+    swap_free = mem.get('SwapFree', 0)
+    swap_used = swap_tot - swap_free
+    res['swap_percent'] = int(round((swap_used / swap_tot) * 100)) if swap_tot > 0 else 0
+except: pass
+
+try:
+    st = os.statvfs('/')
+    tot = st.f_blocks * st.f_frsize
+    free = st.f_bavail * st.f_frsize
+    used = tot - free
+    res['disk_total_gb'] = round(tot / (1024**3), 1)
+    res['disk_used_gb'] = round(used / (1024**3), 1)
+    res['disk_percent'] = int(round((used / tot) * 100))
+except: pass
+
+try:
+    for p in sorted(glob.glob('/sys/class/hwmon/hwmon*/temp*_input')):
+        nf = os.path.join(os.path.dirname(p), 'name')
+        n = open(nf).read().strip() if os.path.exists(nf) else ''
+        if n in ['k10temp', 'coretemp', 'acpitz']:
+            v = int(open(p).read().strip()) // 1000
+            if v > 0 and (res['cpu_temp'] == 0 or n in ['k10temp', 'coretemp']):
+                res['cpu_temp'] = v
+except: pass
+
+try:
+    for p in glob.glob('/sys/class/drm/card*/device/gpu_busy_percent'):
+        try:
+            res['gpu_busy'] = int(open(p).read().strip())
+        except: pass
+    for p in glob.glob('/sys/class/drm/card*/device/hwmon/hwmon*/temp1_input'):
+        try:
+            t = int(open(p).read().strip()) // 1000
+            if t > 0: res['gpu_temp'] = t
+        except: pass
+except: pass
+
+
+try:
+    import glob, os
+    for p in glob.glob('/sys/class/power_supply/BAT*/capacity'):
+        res['battery_percent'] = int(open(p).read().strip())
+        status_path = p.replace('capacity', 'status')
+        if os.path.exists(status_path):
+            status = open(status_path).read().strip()
+            res['battery_status'] = '⚡ ' if status == 'Charging' else ('🔌 ' if status in ['Full', 'Not charging'] else '')
+        break
+except: pass
+
+print(json.dumps(res))

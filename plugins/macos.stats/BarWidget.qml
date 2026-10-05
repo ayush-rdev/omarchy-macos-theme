@@ -13,86 +13,47 @@ BarWidget {
   function close() { popupOpen = false }
 
   // System stats state
+  property string hostname: "Parikshit"
+  property string osName: "Omarchy"
+  property string uptime: "—"
   property real cpuPercent: 0
-  property int cpuTemp: 0
   property real ramUsedGb: 0
   property real ramTotalGb: 0
   property int ramPercent: 0
-  property int gpuBusy: 0
-  property int gpuTemp: 0
-  property real diskFreeGb: 0
+  property int swapPercent: 0
+  property int batteryPercent: 0
+  property string batteryStatus: ""
+  property real diskUsedGb: 0
   property real diskTotalGb: 0
   property int diskPercent: 0
+  property int cpuTemp: 0
+  property int gpuBusy: 0
+  property int gpuTemp: 0
 
   Process {
     id: statsProc
-    command: ["python3", "-c", "
-import json, glob, os
-res = {'cpu_percent': 0, 'cpu_temp': 0, 'ram_used_gb': 0, 'ram_total_gb': 0, 'ram_percent': 0, 'gpu_busy': 0, 'gpu_temp': 0, 'disk_free_gb': 0, 'disk_total_gb': 0, 'disk_percent': 0}
-try:
-    with open('/proc/loadavg') as f:
-        load = float(f.read().split()[0])
-        cores = os.cpu_count() or 1
-        res['cpu_percent'] = min(100.0, round((load / cores) * 100, 1))
-except: pass
-
-try:
-    mem = {}
-    with open('/proc/meminfo') as f:
-        for line in f:
-            p = line.split(':')
-            if len(p) == 2: mem[p[0].strip()] = int(p[1].strip().split()[0])
-    tot = mem.get('MemTotal', 1)
-    avail = mem.get('MemAvailable', 1)
-    used = tot - avail
-    res['ram_total_gb'] = round(tot / 1048576, 1)
-    res['ram_used_gb'] = round(used / 1048576, 1)
-    res['ram_percent'] = int(round((used / tot) * 100))
-except: pass
-
-try:
-    for p in sorted(glob.glob('/sys/class/hwmon/hwmon*/temp*_input')):
-        nf = os.path.join(os.path.dirname(p), 'name')
-        n = open(nf).read().strip() if os.path.exists(nf) else ''
-        if n in ['k10temp', 'coretemp', 'acpitz']:
-            v = int(open(p).read().strip()) // 1000
-            if v > 0 and (res['cpu_temp'] == 0 or n in ['k10temp', 'coretemp']):
-                res['cpu_temp'] = v
-except: pass
-
-try:
-    for p in glob.glob('/sys/class/drm/card*/device/gpu_busy_percent'):
-        res['gpu_busy'] = int(open(p).read().strip())
-    for p in glob.glob('/sys/class/drm/card*/device/hwmon/hwmon*/temp1_input'):
-        res['gpu_temp'] = int(open(p).read().strip()) // 1000
-except: pass
-
-try:
-    st = os.statvfs('/')
-    tot = st.f_blocks * st.f_frsize
-    free = st.f_bavail * st.f_frsize
-    used = tot - free
-    res['disk_total_gb'] = round(tot / (1024**3), 1)
-    res['disk_free_gb'] = round(free / (1024**3), 1)
-    res['disk_percent'] = int(round((used / tot) * 100))
-except: pass
-
-print(json.dumps(res))
-"]
-    stdout: SplitParser {
-      onRead: function(data) {
+    command: ["omarchy-macos-stats"]
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: {
         try {
-          var s = JSON.parse(data.trim())
+          var s = JSON.parse(text.trim())
+          root.hostname = s.hostname || "Parikshit"
+          root.osName = s.os_name || "Omarchy"
+          root.uptime = s.uptime || "—"
           root.cpuPercent = s.cpu_percent || 0
-          root.cpuTemp = s.cpu_temp || 0
           root.ramUsedGb = s.ram_used_gb || 0
           root.ramTotalGb = s.ram_total_gb || 0
           root.ramPercent = s.ram_percent || 0
-          root.gpuBusy = s.gpu_busy || 0
-          root.gpuTemp = s.gpu_temp || 0
-          root.diskFreeGb = s.disk_free_gb || 0
+          root.swapPercent = s.swap_percent || 0
+          root.batteryPercent = s.battery_percent || 0
+          root.batteryStatus = s.battery_status || ""
+          root.diskUsedGb = s.disk_used_gb || 0
           root.diskTotalGb = s.disk_total_gb || 0
           root.diskPercent = s.disk_percent || 0
+          root.cpuTemp = s.cpu_temp || 0
+          root.gpuBusy = s.gpu_busy || 0
+          root.gpuTemp = s.gpu_temp || 0
         } catch(e) {}
       }
     }
@@ -111,12 +72,12 @@ print(json.dumps(res))
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
 
-  // Minimalist bar icon (Option A: Clean single chip icon)
+  // Minimalist bar icon (Sleek Microchip)
   BarIconButton {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: "󰍛"
+    text: ""
     onPressed: function(b) {
       if (b === Qt.RightButton) {
         Quickshell.execDetached(["omarchy-launch-terminal", "btop"])
@@ -126,229 +87,199 @@ print(json.dumps(res))
     }
   }
 
-  PopupCard {
+  KeyboardPanel {
     id: popup
     anchorItem: button
     bar: root.bar
     owner: root
     open: root.popupOpen
-    contentWidth: popup.fittedContentWidth(Style.space(310))
+    contentWidth: popup.fittedContentWidth(Style.space(320))
     contentHeight: popup.fittedContentHeight(mainColumn.implicitHeight)
 
     Column {
       id: mainColumn
       anchors.fill: parent
-      spacing: Style.space(12)
+      spacing: Style.space(14)
 
-      // Header row
+      // ================= Header Section (Laptop Icon + Parikshit Laptop) =================
       Row {
         width: parent.width
-        Item {
-          width: parent.width
-          height: titleTag.implicitHeight
+        spacing: Style.space(12)
 
-          Row {
-            id: titleTag
-            anchors.left: parent.left
-            spacing: Style.space(6)
+        Text {
+          text: "󰌢"
+          color: root.cpuPercent > 80 ? "#ff5555" : Color.accent
+          font.family: root.bar.fontFamily
+          font.pixelSize: Style.font.displayLarge
+          anchors.verticalCenter: parent.verticalCenter
+        }
 
-            Text {
-              textFormat: Text.PlainText
-              text: "󰍛"
-              color: Color.accent
-              font.family: root.bar.fontFamily
-              font.pixelSize: Style.font.bodySmall
-              anchors.verticalCenter: parent.verticalCenter
-            }
+        Column {
+          anchors.verticalCenter: parent.verticalCenter
+          spacing: Style.space(2)
 
-            Text {
-              textFormat: Text.PlainText
-              text: "Activity Monitor"
-              color: root.bar.foreground
-              font.family: root.bar.fontFamily
-              font.pixelSize: Style.font.caption
-              font.bold: true
-              anchors.verticalCenter: parent.verticalCenter
-            }
+          Text {
+            text: root.hostname + " Laptop"
+            color: root.bar.foreground
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.title
+            font.bold: true
           }
 
           Text {
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            textFormat: Text.PlainText
-            text: root.cpuTemp > 0 ? (root.cpuTemp + "°C") : "Active"
-            color: root.cpuTemp > 80 ? "#ff5555" : (root.cpuTemp > 70 ? "#ffb86c" : Color.accent)
+            text: root.osName + "  •  " + (root.uptime !== "—" ? ("󱑂 " + root.uptime) : "Online")
+            color: Qt.darker(root.bar.foreground, 1.5)
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.caption
-            font.bold: true
           }
         }
       }
 
-      // 1. CPU Usage Meter
-      Column {
-        width: parent.width
-        spacing: Style.space(4)
+      Text {
+        text: "HARDWARE VITALS"
+        color: Qt.darker(root.bar.foreground, 1.4)
+        font.family: root.bar.fontFamily
+        font.pixelSize: Style.font.caption
+        font.bold: true
+        font.letterSpacing: 1.2
+      }
 
-        Row {
-          width: parent.width
+      // ================= Pure Clean Typography (2-Column Grid) =================
+      Grid {
+        width: parent.width
+        columns: 2
+        rowSpacing: Style.space(12)
+        columnSpacing: Style.space(24)
+
+        // CPU
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
           Text {
             anchors.left: parent.left
-            textFormat: Text.PlainText
             text: "CPU"
             color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+          Text {
+            anchors.right: parent.right
+            text: root.cpuPercent + "%"
+            color: root.cpuPercent > 80 ? "#ff5555" : (root.cpuPercent > 50 ? "#ffb86c" : root.bar.foreground)
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
           }
-          Text {
-            anchors.right: parent.right
-            textFormat: Text.PlainText
-            text: root.cpuPercent + "%"
-            color: Qt.darker(root.bar.foreground, 1.3)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.caption
-          }
         }
 
-        Rectangle {
-          width: parent.width
-          height: Style.space(6)
-          radius: height / 2
-          color: Style.selectedFillFor(root.bar.foreground, Color.accent)
-
-          Rectangle {
-            width: Math.max(0, Math.min(parent.width, parent.width * (root.cpuPercent / 100)))
-            height: parent.height
-            radius: height / 2
-            color: root.cpuPercent > 85 ? "#ff5555" : (root.cpuPercent > 60 ? "#ffb86c" : Color.accent)
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
-          }
-        }
-      }
-
-      // 2. RAM Memory Meter
-      Column {
-        width: parent.width
-        spacing: Style.space(4)
-
-        Row {
-          width: parent.width
+        // Memory
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
           Text {
             anchors.left: parent.left
-            textFormat: Text.PlainText
             text: "Memory"
             color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+          Text {
+            anchors.right: parent.right
+            text: root.ramPercent + "%"
+            color: root.ramPercent > 80 ? "#ff5555" : (root.ramPercent > 50 ? "#ffb86c" : root.bar.foreground)
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
           }
-          Text {
-            anchors.right: parent.right
-            textFormat: Text.PlainText
-            text: root.ramUsedGb + " GB / " + root.ramTotalGb + " GB (" + root.ramPercent + "%)"
-            color: Qt.darker(root.bar.foreground, 1.3)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.caption
-          }
         }
 
-        Rectangle {
-          width: parent.width
-          height: Style.space(6)
-          radius: height / 2
-          color: Style.selectedFillFor(root.bar.foreground, Color.accent)
-
-          Rectangle {
-            width: Math.max(0, Math.min(parent.width, parent.width * (root.ramPercent / 100)))
-            height: parent.height
-            radius: height / 2
-            color: root.ramPercent > 85 ? "#ff5555" : (root.ramPercent > 65 ? "#ffb86c" : Color.accent)
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
-          }
-        }
-      }
-
-      // 3. GPU Section (if GPU or GPU temp present)
-      Column {
-        width: parent.width
-        spacing: Style.space(4)
-
-        Row {
-          width: parent.width
+        // GPU Temp
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
           Text {
             anchors.left: parent.left
-            textFormat: Text.PlainText
-            text: "GPU"
+            text: "GPU Temp"
             color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+          Text {
+            anchors.right: parent.right
+            text: root.gpuTemp > 0 ? (root.gpuTemp + "°C") : "—"
+            color: root.gpuTemp > 80 ? "#ff5555" : (root.gpuTemp > 70 ? "#ffb86c" : root.bar.foreground)
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
           }
-          Text {
-            anchors.right: parent.right
-            textFormat: Text.PlainText
-            text: (root.gpuTemp > 0 ? (root.gpuTemp + "°C  •  ") : "") + root.gpuBusy + "%"
-            color: Qt.darker(root.bar.foreground, 1.3)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.caption
-          }
         }
 
-        Rectangle {
-          width: parent.width
-          height: Style.space(6)
-          radius: height / 2
-          color: Style.selectedFillFor(root.bar.foreground, Color.accent)
-
-          Rectangle {
-            width: Math.max(0, Math.min(parent.width, parent.width * (root.gpuBusy / 100)))
-            height: parent.height
-            radius: height / 2
-            color: Color.accent
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
-          }
-        }
-      }
-
-      // 4. Storage Disk Meter
-      Column {
-        width: parent.width
-        spacing: Style.space(4)
-
-        Row {
-          width: parent.width
+        // Storage
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
           Text {
             anchors.left: parent.left
-            textFormat: Text.PlainText
-            text: "Disk"
+            text: "Storage"
             color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+          Text {
+            anchors.right: parent.right
+            text: root.diskPercent + "%"
+            color: root.diskPercent > 90 ? "#ff5555" : (root.diskPercent > 70 ? "#ffb86c" : root.bar.foreground)
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
           }
+        }
+
+        // CPU Temp
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
+          Text {
+            anchors.left: parent.left
+            text: "CPU Temp"
+            color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
           Text {
             anchors.right: parent.right
-            textFormat: Text.PlainText
-            text: root.diskFreeGb + " GB free / " + root.diskTotalGb + " GB"
-            color: Qt.darker(root.bar.foreground, 1.3)
+            text: root.cpuTemp > 0 ? (root.cpuTemp + "°C") : "—"
+            color: root.cpuTemp > 80 ? "#ff5555" : (root.cpuTemp > 70 ? "#ffb86c" : root.bar.foreground)
             font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.caption
+            font.pixelSize: Style.font.bodySmall
+            font.bold: true
           }
         }
 
-        Rectangle {
-          width: parent.width
-          height: Style.space(6)
-          radius: height / 2
-          color: Style.selectedFillFor(root.bar.foreground, Color.accent)
-
-          Rectangle {
-            width: Math.max(0, Math.min(parent.width, parent.width * (root.diskPercent / 100)))
-            height: parent.height
-            radius: height / 2
-            color: root.diskPercent > 90 ? "#ff5555" : Color.accent
-            Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
+        // Swap
+        Item {
+          width: (parent.width - parent.columnSpacing) / 2
+          height: childrenRect.height
+          Text {
+            anchors.left: parent.left
+            text: "Swap"
+            color: root.bar.foreground
+            opacity: 0.6
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+          Text {
+            anchors.right: parent.right
+            text: root.swapPercent + "%"
+            color: root.swapPercent > 80 ? "#ff5555" : (root.swapPercent > 50 ? "#ffb86c" : root.bar.foreground)
+            font.family: root.bar.fontFamily
+            font.pixelSize: Style.font.bodySmall
+            font.bold: true
           }
         }
       }
@@ -357,17 +288,84 @@ print(json.dumps(res))
         foreground: root.bar.foreground
       }
 
-      // Quick launcher button to open Activity Monitor (btop)
-      Button {
+      Text {
+        text: "CONTROLS & SHORTCUTS"
+        color: Qt.darker(root.bar.foreground, 1.4)
+        font.family: root.bar.fontFamily
+        font.pixelSize: Style.font.caption
+        font.bold: true
+        font.letterSpacing: 1.2
+      }
+
+      // Shortcut Grid
+      Grid {
         width: parent.width
-        text: "Open Activity Monitor"
-        iconText: "󰆍"
-        foreground: root.bar.foreground
-        horizontalPadding: Style.space(12)
-        verticalPadding: Style.space(8)
-        onClicked: {
-          root.close()
-          Quickshell.execDetached(["omarchy-launch-terminal", "btop"])
+        columns: 2
+        rowSpacing: Style.space(8)
+        columnSpacing: Style.space(8)
+
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Files"
+          iconText: "󰉋"
+          foreground: root.bar.foreground
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: {
+            root.close()
+            Quickshell.execDetached(["nautilus"])
+          }
+        }
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Terminal"
+          iconText: "󰆍"
+          foreground: root.bar.foreground
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: {
+            root.close()
+            Quickshell.execDetached(["omarchy-launch-terminal"])
+          }
+        }
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Monitor"
+          iconText: "󰡣"
+          foreground: root.bar.foreground
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: {
+            root.close()
+            Quickshell.execDetached(["omarchy-launch-terminal", "btop"])
+          }
+        }
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Lock"
+          iconText: "󰌾"
+          foreground: root.bar.foreground
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: { root.close(); Quickshell.execDetached(["hyprlock"]) }
+        }
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Reboot"
+          iconText: "󰑓"
+          foreground: root.bar.foreground
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: { root.close(); Quickshell.execDetached(["systemctl", "reboot"]) }
+        }
+        Button {
+          width: (parent.width - parent.columnSpacing) / 2
+          text: "Power"
+          iconText: "󰐥"
+          foreground: "#ff5555"
+          horizontalPadding: Style.space(8)
+          verticalPadding: Style.space(8)
+          onClicked: { root.close(); Quickshell.execDetached(["systemctl", "poweroff"]) }
         }
       }
     }
