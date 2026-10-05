@@ -28,6 +28,13 @@ if ! command -v sushi >/dev/null 2>&1; then
   fi
 fi
 
+# Apply authentic macOS Quick Look patch (no close button, Apple typography)
+if [[ -f "$THEME_DIR/patches/org.gnome.NautilusPreviewer.src.gresource" && -d "/usr/share/sushi" ]]; then
+  echo -e "${BLUE}==>${NC} Applying authentic macOS Quick Look UI patch..."
+  sudo cp -f "$THEME_DIR/patches/org.gnome.NautilusPreviewer.src.gresource" "/usr/share/sushi/org.gnome.NautilusPreviewer.src.gresource" 2>/dev/null || true
+  pkill -f NautilusPreviewer 2>/dev/null || true
+fi
+
 # 3. Install all macOS helper scripts
 echo -e "${BLUE}==>${NC} Installing macOS helper scripts to $BIN_DIR..."
 if [[ -d "$THEME_DIR/scripts" ]]; then

@@ -73,7 +73,13 @@ if [[ -f "$HYPR_INPUT" ]]; then
   sed -i '/toggle-window-switcher/d' "$HYPR_INPUT"
 fi
 
-# 5. Remove theme files and switch to an Omarchy default theme
+# 5. Restore stock GNOME Sushi if modified
+if command -v pacman >/dev/null 2>&1 && command -v sushi >/dev/null 2>&1; then
+  echo -e "${BLUE}==>${NC} Restoring stock GNOME Sushi package..."
+  sudo pacman -S --noconfirm sushi 2>/dev/null || true
+fi
+
+# 6. Remove theme files and switch to an Omarchy default theme
 echo -e "${BLUE}==>${NC} Removing theme files..."
 omarchy theme remove macos 2>/dev/null || rm -rf "$HOME/.config/omarchy/themes/macos"
 
