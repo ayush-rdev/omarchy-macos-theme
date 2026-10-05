@@ -78,6 +78,18 @@ BarWidget {
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
 
+  // Background image pre-loader so artwork is already cached in memory before popup is opened
+  Image {
+    id: backgroundPreloadArt
+    visible: false
+    width: Style.space(84)
+    height: Style.space(84)
+    sourceSize: Qt.size(Style.space(168), Style.space(168))
+    source: root.cleanArtUrl(root.activePlayer && root.activePlayer.trackArtUrl ? root.activePlayer.trackArtUrl : "")
+    asynchronous: true
+    cache: true
+  }
+
   BarIconButton {
     id: button
     anchors.fill: parent
@@ -184,13 +196,13 @@ BarWidget {
             id: albumArt
             anchors.fill: parent
             fillMode: Image.PreserveAspectCrop
-            asynchronous: true
+            asynchronous: false
             cache: true
             smooth: true
             mipmap: true
             source: root.cleanArtUrl(root.activePlayer && root.activePlayer.trackArtUrl ? root.activePlayer.trackArtUrl : "")
             visible: source !== ""
-            sourceSize: Qt.size(width * 2, height * 2)
+            sourceSize: Qt.size(Style.space(168), Style.space(168))
           }
 
           Text {
