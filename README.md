@@ -89,6 +89,10 @@ for workspace = 1, 10 do
   o.bind("SUPER + ALT + " .. key, "Move window to workspace " .. workspace, hl.dsp.window.move({ workspace = tostring(workspace) }))
   o.bind("SUPER + SHIFT + " .. key, "Move window silently to workspace " .. workspace, hl.dsp.window.move({ workspace = tostring(workspace), follow = false }))
 end
+
+-- Alt + Mouse Scroll: Cycle windows in current workspace (Alt + Tab equivalent)
+o.bind("ALT + mouse_down", "Focus on next window", hl.dsp.window.cycle_next())
+o.bind("ALT + mouse_up", "Focus on previous window", hl.dsp.window.cycle_next({ next = false }))
 ```
 
 ---
