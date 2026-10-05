@@ -215,17 +215,6 @@ BarWidget {
             font.pixelSize: Style.font.bodySmall
             elide: Text.ElideRight
           }
-
-          Text {
-            width: parent.width
-            textFormat: Text.PlainText
-            text: root.activePlayer && root.activePlayer.trackAlbum ? root.activePlayer.trackAlbum : ""
-            color: Qt.darker(root.bar.foreground, 1.7)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.caption
-            elide: Text.ElideRight
-            visible: text !== ""
-          }
         }
       }
 
