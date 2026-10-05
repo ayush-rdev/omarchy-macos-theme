@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+
+def main():
+    try:
+        clients_json = subprocess.check_output(["hyprctl", "clients", "-j"], text=True)
+        clients = json.loads(clients_json)
+    except Exception:
+        return
+
+    # Filter windows on real workspaces
+    valid_clients = [c for c in clients if c.get("workspace", {}).get("id", 0) > 0]
+    if not valid_clients:
+        return
+
+    # Format options for the native omarchy.menu: "<glyph>\t<label>\t<subtext/address>"
+    options = []
+    for c in valid_clients:
+        title = c.get("title") or "Untitled Window"
+        app_class = c.get("class") or c.get("initialClass") or "Application"
+        ws_name = str(c.get("workspace", {}).get("name") or c.get("workspace", {}).get("id") or "1")
+        addr = c.get("address")
+        
+        subtext = f"{app_class}  •  Workspace {ws_name}  [{addr}]"
+        options.append(f"󰖲\t{title}\t{subtext}")
+
+    # Use unique temporary paths
+    with tempfile.NamedTemporaryFile(prefix="win_sel_", delete=False) as f_sel, \
+         tempfile.NamedTemporaryFile(prefix="win_done_", delete=False) as f_done:
+        sel_path = f_sel.name
+        done_path = f_done.name
+
+    payload = {
+        "mode": "select",
+        "prompt": "Switch Window",
+        "options": options,
+        "selectionFile": sel_path,
+        "doneFile": done_path,
+        "width": 580,
+        "maxHeight": 460
+    }
+
+    # Start inotifywait process BEFORE summoning menu so no event is missed
+    watcher = subprocess.Popen(["inotifywait", "-qq", "-e", "modify", "-e", "close_write", done_path])
+
+    # Summon the official Omarchy Menu (Spotlight UI)
+    subprocess.run(["omarchy-shell", "shell", "summon", "omarchy.menu", json.dumps(payload)])
+
+    # Wait for completion or timeout
+    try:
+        watcher.wait(timeout=60)
+    except subprocess.TimeoutExpired:
+        watcher.kill()
+
+    # Small settle delay for file writes
+    time.sleep(0.05)
+
+    # Read selected window address
+    selected_addr = None
+    if os.path.exists(sel_path):
+        try:
+            with open(sel_path, "r") as f:
+                content = f.read().strip()
+                if "[" in content and content.endswith("]"):
+                    selected_addr = content.rsplit("[", 1)[-1].rstrip("]")
+        except Exception:
+            pass
+
+    # Cleanup temp files
+    for p in (sel_path, done_path):
+        try:
+            if os.path.exists(p):
+                os.remove(p)
+        except Exception:
+            pass
+
+    # Focus selected window
+    if selected_addr:
+        # Move cursor to window center so follow_mouse does not override focus
+        target = next((c for c in valid_clients if c.get("address") == selected_addr), None)
+        if target:
+            at = target.get("at", [0, 0])
+            size = target.get("size", [800, 600])
+            cx = at[0] + size[0] // 2
+            cy = at[1] + size[1] // 2
+            subprocess.run(["hyprctl", "dispatch", f"hl.dsp.cursor.move({{ x = {cx}, y = {cy} }})"])
+
+        # Unfullscreen current window if needed, then focus target window and bring to top
+        subprocess.run(["hyprctl", "dispatch", f'hl.dsp.focus({{ window = "address:{selected_addr}" }})'])
+        subprocess.run(["hyprctl", "dispatch", "hl.dsp.window.bring_to_top()"])
+
+if __name__ == "__main__":
+    main()

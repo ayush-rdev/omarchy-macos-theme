@@ -43,9 +43,9 @@ local function gradient(token, fallback)
   return res
 end
 
--- Authentic macOS subtle 1px Retina rim: translucent Apple Blue to Cyan glow on active, soft glass rim on inactive
-local active_border = gradient("hyprland_active_border", "accent") or { colors = { "rgba(0a84ffb8)", "rgba(64d2ff98)" }, angle = 45 }
-local inactive_border = gradient("hyprland_inactive_border") or "rgba(ffffff12)"
+-- Authentic macOS subtle 1px Retina rim: soft translucent glass reflection on active, subtle dark glass on inactive
+local active_border = gradient("hyprland_active_border") or "rgba(ffffff28)"
+local inactive_border = gradient("hyprland_inactive_border") or "rgba(ffffff10)"
 
 hl.config({
   general = {
@@ -101,22 +101,6 @@ hl.config({
       font_weight_active = "bold",
       indicator_height = 2,
       gradient_rounding = 8,
-    },
-  },
-
-  input = {
-    -- Authentic macOS trackpad feel: Adaptive acceleration & natural scrolling
-    accel_profile = "adaptive",
-    sensitivity = 0.0,
-
-    touchpad = {
-      -- macOS Natural Scrolling (two fingers push content directly)
-      natural_scroll = true,
-      -- Calibrated smooth scroll factor for comfortable, fluid reading
-      scroll_factor = 0.38,
-      clickfinger_behavior = true,
-      tap_to_click = true,
-      disable_while_typing = true,
     },
   },
 })
