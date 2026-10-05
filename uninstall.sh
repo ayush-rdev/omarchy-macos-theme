@@ -43,7 +43,8 @@ HYPR_BINDINGS="$HOME/.config/hypr/bindings.lua"
 HYPR_INPUT="$HOME/.config/hypr/input.lua"
 
 if [[ -f "$HYPR_MAIN" ]]; then
-  sed -i '/dynamic-cursors.so/d' "$HYPR_MAIN"
+  sed -i '/dynamic-cursor/d' "$HYPR_MAIN"
+  sed -i '/pcall.*hl\.plugin\.load/d' "$HYPR_MAIN"
 fi
 
 if [[ -f "$HYPR_LOOK" ]]; then
