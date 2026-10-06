@@ -380,19 +380,19 @@ BarWidget {
           verticalPadding: Style.space(8)
           onClicked: {
             root.close()
-            Quickshell.execDetached(["nautilus"])
+            Quickshell.execDetached(["sh", "-c", "gtk-launch $(xdg-mime query default inode/directory)"])
           }
         }
         Button {
           width: (parent.width - parent.columnSpacing) / 2
-          text: "Brave"
+          text: "Browser"
           iconText: "󰖟"
           foreground: root.bar.foreground
           horizontalPadding: Style.space(8)
           verticalPadding: Style.space(8)
           onClicked: {
             root.close()
-            Quickshell.execDetached(["brave"])
+            Quickshell.execDetached(["sh", "-c", "gtk-launch $(xdg-settings get default-web-browser)"])
           }
         }
         Button {
