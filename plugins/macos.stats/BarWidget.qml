@@ -60,9 +60,9 @@ BarWidget {
   }
 
   Timer {
-    interval: root.popupOpen ? 1500 : 5000
+    interval: 1500
     repeat: true
-    running: true
+    running: root.popupOpen
     triggeredOnStart: true
     onTriggered: {
       if (!statsProc.running) statsProc.running = true
