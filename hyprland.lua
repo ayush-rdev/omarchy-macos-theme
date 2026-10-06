@@ -175,7 +175,7 @@ hl.config({
       },
       hyprcursor = {
         enabled = true,
-        nearest = false,
+        nearest = true,
         resolution = -1,
         fallback = "clientside",
       },
