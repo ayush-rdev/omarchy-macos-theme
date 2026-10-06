@@ -135,151 +135,218 @@ BarWidget {
         }
       }
 
-      Text {
-        text: "HARDWARE VITALS"
-        color: Qt.darker(root.bar.foreground, 1.4)
-        font.family: root.bar.fontFamily
-        font.pixelSize: Style.font.caption
-        font.bold: true
-        font.letterSpacing: 1.2
-      }
 
-      // ================= Pure Clean Typography (2-Column Grid) =================
-      Grid {
+
+      // ================= Hardware Vitals (Bars Aesthetic) =================
+      Column {
         width: parent.width
-        columns: 2
-        rowSpacing: Style.space(12)
-        columnSpacing: Style.space(24)
+        spacing: Style.space(14)
 
         // CPU
         Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
+          width: parent.width
+          height: Math.max(cpuLabel.implicitHeight, Style.space(10))
+          
           Text {
+            id: cpuLabel
             anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
             text: "CPU"
             color: root.bar.foreground
-            opacity: 0.6
+            opacity: 0.8
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
+            width: Style.space(48)
           }
+
+          Item {
+            anchors.left: cpuLabel.right
+            anchors.right: cpuVal.left
+            anchors.leftMargin: Style.space(20)
+            anchors.rightMargin: Style.space(20)
+            anchors.verticalCenter: parent.verticalCenter
+            height: Style.space(10)
+            
+            Rectangle {
+              anchors.fill: parent
+              color: Util.alpha(root.bar.foreground, 0.1)
+              radius: 0
+            }
+            Rectangle {
+              width: (parent.width * Math.max(0, Math.min(root.cpuPercent, 100))) / 100
+              height: parent.height
+              color: Color.accent
+              radius: 0
+            }
+          }
+
           Text {
+            id: cpuVal
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             text: root.cpuPercent + "%"
-            color: root.cpuPercent > 80 ? "#ff5555" : (root.cpuPercent > 50 ? "#ffb86c" : root.bar.foreground)
+            color: Color.accent
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
+            width: Style.space(36)
+            horizontalAlignment: Text.AlignRight
           }
         }
 
         // Memory
         Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
+          width: parent.width
+          height: Math.max(memLabel.implicitHeight, Style.space(10))
+          
           Text {
+            id: memLabel
             anchors.left: parent.left
-            text: "Memory"
+            anchors.verticalCenter: parent.verticalCenter
+            text: "RAM"
             color: root.bar.foreground
-            opacity: 0.6
+            opacity: 0.8
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
+            width: Style.space(48)
           }
-          Text {
-            anchors.right: parent.right
-            text: root.ramPercent + "%"
-            color: root.ramPercent > 80 ? "#ff5555" : (root.ramPercent > 50 ? "#ffb86c" : root.bar.foreground)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-          }
-        }
 
-        // GPU Temp
-        Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
-          Text {
-            anchors.left: parent.left
-            text: "GPU Temp"
-            color: root.bar.foreground
-            opacity: 0.6
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.bodySmall
+          Item {
+            anchors.left: memLabel.right
+            anchors.right: memVal.left
+            anchors.leftMargin: Style.space(20)
+            anchors.rightMargin: Style.space(20)
+            anchors.verticalCenter: parent.verticalCenter
+            height: Style.space(10)
+            
+            Rectangle {
+              anchors.fill: parent
+              color: Util.alpha(root.bar.foreground, 0.1)
+              radius: 0
+            }
+            Rectangle {
+              width: (parent.width * Math.max(0, Math.min(root.ramPercent, 100))) / 100
+              height: parent.height
+              color: Color.accent
+              radius: 0
+            }
           }
+
           Text {
+            id: memVal
             anchors.right: parent.right
-            text: root.gpuTemp > 0 ? (root.gpuTemp + "°C") : "—"
-            color: root.gpuTemp > 80 ? "#ff5555" : (root.gpuTemp > 70 ? "#ffb86c" : root.bar.foreground)
+            anchors.verticalCenter: parent.verticalCenter
+            text: root.ramPercent + "%"
+            color: Color.accent
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
+            width: Style.space(36)
+            horizontalAlignment: Text.AlignRight
           }
         }
 
         // Storage
         Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
+          width: parent.width
+          height: Math.max(storageLabel.implicitHeight, Style.space(10))
+          
           Text {
+            id: storageLabel
             anchors.left: parent.left
-            text: "Storage"
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Disk"
             color: root.bar.foreground
-            opacity: 0.6
+            opacity: 0.8
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
+            width: Style.space(48)
           }
+
+          Item {
+            anchors.left: storageLabel.right
+            anchors.right: storageVal.left
+            anchors.leftMargin: Style.space(20)
+            anchors.rightMargin: Style.space(20)
+            anchors.verticalCenter: parent.verticalCenter
+            height: Style.space(10)
+            
+            Rectangle {
+              anchors.fill: parent
+              color: Util.alpha(root.bar.foreground, 0.1)
+              radius: 0
+            }
+            Rectangle {
+              width: (parent.width * Math.max(0, Math.min(root.diskPercent, 100))) / 100
+              height: parent.height
+              color: Color.accent
+              radius: 0
+            }
+          }
+
           Text {
+            id: storageVal
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             text: root.diskPercent + "%"
-            color: root.diskPercent > 90 ? "#ff5555" : (root.diskPercent > 70 ? "#ffb86c" : root.bar.foreground)
+            color: Color.accent
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
+            width: Style.space(36)
+            horizontalAlignment: Text.AlignRight
           }
         }
 
-        // CPU Temp
+        // Temperatures (Mapped to average temp for bar)
         Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
+          width: parent.width
+          height: Math.max(tempsLabel.implicitHeight, Style.space(10))
+          
           Text {
+            id: tempsLabel
             anchors.left: parent.left
-            text: "CPU Temp"
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Temp"
             color: root.bar.foreground
-            opacity: 0.6
+            opacity: 0.8
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
+            width: Style.space(48)
           }
-          Text {
-            anchors.right: parent.right
-            text: root.cpuTemp > 0 ? (root.cpuTemp + "°C") : "—"
-            color: root.cpuTemp > 80 ? "#ff5555" : (root.cpuTemp > 70 ? "#ffb86c" : root.bar.foreground)
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-          }
-        }
 
-        // Swap
-        Item {
-          width: (parent.width - parent.columnSpacing) / 2
-          height: childrenRect.height
-          Text {
-            anchors.left: parent.left
-            text: "Swap"
-            color: root.bar.foreground
-            opacity: 0.6
-            font.family: root.bar.fontFamily
-            font.pixelSize: Style.font.bodySmall
+          Item {
+            anchors.left: tempsLabel.right
+            anchors.right: tempsVal.left
+            anchors.leftMargin: Style.space(20)
+            anchors.rightMargin: Style.space(20)
+            anchors.verticalCenter: parent.verticalCenter
+            height: Style.space(10)
+            
+            Rectangle {
+              anchors.fill: parent
+              color: Util.alpha(root.bar.foreground, 0.1)
+              radius: 0
+            }
+            Rectangle {
+              width: (parent.width * Math.max(0, Math.min(root.cpuTemp > 0 ? root.cpuTemp : 0, 100))) / 100
+              height: parent.height
+              color: Color.accent
+              radius: 0
+            }
           }
+
           Text {
+            id: tempsVal
             anchors.right: parent.right
-            text: root.swapPercent + "%"
-            color: root.swapPercent > 80 ? "#ff5555" : (root.swapPercent > 50 ? "#ffb86c" : root.bar.foreground)
+            anchors.verticalCenter: parent.verticalCenter
+            text: (root.cpuTemp > 0 ? root.cpuTemp : 0) + "°C"
+            color: Color.accent
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.bold: true
+            width: Style.space(36)
+            horizontalAlignment: Text.AlignRight
           }
         }
       }
@@ -289,7 +356,7 @@ BarWidget {
       }
 
       Text {
-        text: "CONTROLS & SHORTCUTS"
+        text: "SHORTCUTS"
         color: Qt.darker(root.bar.foreground, 1.4)
         font.family: root.bar.fontFamily
         font.pixelSize: Style.font.caption
@@ -318,14 +385,14 @@ BarWidget {
         }
         Button {
           width: (parent.width - parent.columnSpacing) / 2
-          text: "Terminal"
-          iconText: "󰆍"
+          text: "Brave"
+          iconText: "󰖟"
           foreground: root.bar.foreground
           horizontalPadding: Style.space(8)
           verticalPadding: Style.space(8)
           onClicked: {
             root.close()
-            Quickshell.execDetached(["omarchy-launch-terminal"])
+            Quickshell.execDetached(["brave"])
           }
         }
         Button {
