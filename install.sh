@@ -12,13 +12,22 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}==>${NC} Installing macOS Sequoia Theme for Omarchy..."
 
 # 1. Install & set theme
-omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git 2>/dev/null || true
-omarchy theme set macos
-
 THEME_DIR="$HOME/.config/omarchy/themes/macos"
 BIN_DIR="$HOME/.local/bin"
 SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
 mkdir -p "$BIN_DIR" "$SYSTEMD_USER_DIR"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+
+if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/colors.toml" ]]; then
+  echo -e "${BLUE}==>${NC} Installing theme assets from local repository..."
+  mkdir -p "$THEME_DIR"
+  cp -rf "$SCRIPT_DIR/"* "$THEME_DIR/"
+else
+  omarchy theme install https://github.com/parixiit/omarchy-macos-theme.git 2>/dev/null || \
+  omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git 2>/dev/null || true
+fi
+omarchy theme set macos 2>/dev/null || true
 
 # 2. Check & install sushi for macOS Quick Look (Spacebar file preview)
 if ! command -v sushi >/dev/null 2>&1; then
@@ -99,6 +108,17 @@ if [[ -f "$HYPR_INPUT" ]] && ! grep -q "toggle-window-switcher" "$HYPR_INPUT"; t
   cat << 'EOF' >> "$HYPR_INPUT"
 
 -- macOS Touchpad gestures (3-finger swipe to slide spaces, 3-finger swipe up for window switcher, 3-finger swipe down to close window)
+hl.config({
+  input = {
+    follow_mouse = 1,
+    mouse_refocus = false,
+    special_fallthrough = true,
+  },
+  cursor = {
+    no_warps = true,
+  },
+})
+
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 hl.gesture({
   fingers = 3,
@@ -121,54 +141,84 @@ fi
 PLUGINS_DIR="$HOME/.config/hypr/plugins"
 mkdir -p "$PLUGINS_DIR"
 if [[ -f "$THEME_DIR/plugins/dynamic-cursors.so" ]]; then
-  echo -e "${BLUE}==>${NC} Installing macOS Dynamic Cursor (Shake to Find)..."
+  echo -e "${BLUE}==>${NC} Installing macOS Dynamic Cursor..."
   cp -f "$THEME_DIR/plugins/dynamic-cursors.so" "$PLUGINS_DIR/dynamic-cursors.so"
+fi
 
-  HYPR_MAIN="$HOME/.config/hypr/hyprland.lua"
-  if [[ -f "$HYPR_MAIN" ]] && ! grep -q "dynamic-cursors.so" "$HYPR_MAIN"; then
-    cat << 'EOF' >> "$HYPR_MAIN"
+HYPR_MAIN="$HOME/.config/hypr/hyprland.lua"
+if [[ -f "$HYPR_MAIN" ]] && ! grep -q "dynamic-cursors" "$HYPR_MAIN"; then
+  cat << 'EOF' >> "$HYPR_MAIN"
 
--- Load dynamic cursor plugin for macOS-like shake to find
-hl.plugin.load(os.getenv("HOME") .. "/.config/hypr/plugins/dynamic-cursors.so")
+-- Safely load dynamic cursor plugin if installed (guarded to prevent version mismatch crashes)
+local dynamic_cursor_path = os.getenv("HOME") .. "/.config/hypr/plugins/dynamic-cursors.so"
+local f = io.open(dynamic_cursor_path, "r")
+if f then
+  f:close()
+  pcall(function() hl.plugin.load(dynamic_cursor_path) end)
+end
 EOF
-  fi
+fi
 
-  HYPR_LOOK="$HOME/.config/hypr/looknfeel.lua"
-  if [[ -f "$HYPR_LOOK" ]] && ! grep -q "dynamic_cursors" "$HYPR_LOOK"; then
-    cat << 'EOF' >> "$HYPR_LOOK"
-
--- macOS "Shake to Find" Cursor Magnification (Zero wobble/tilt, pure enlargement)
-hl.config({
-  plugin = {
-    dynamic_cursors = {
-      enabled = true,
-      mode = "none", -- Strictly "none" to disable all tilt/wobble/rotation effects
-      shake = {
-        enabled = true,
-        threshold = 5.0,  -- Trigger sensitivity
-        base = 3.5,       -- Initial magnification when shaken
-        speed = 4.0,      -- Growth speed while shaking continues
-        limit = 5.5,      -- Maximum cursor size
-        timeout = 1000,   -- Milliseconds before shrinking back
-        effects = false,  -- Explicitly false to prevent wobbling or distortions
-        ipc = false,
-      },
-      hyprcursor = {
-        enabled = true,
-        nearest = true,
-        resolution = -1,
-        fallback = "clientside",
-      },
-    },
-  },
-})
-EOF
-  fi
-
+if [[ -f "$PLUGINS_DIR/dynamic-cursors.so" ]]; then
   hyprctl plugin load "$PLUGINS_DIR/dynamic-cursors.so" 2>/dev/null || true
+fi
+
+# 6. Setup macOS "Now Playing" Menu Bar Widget
+SHELL_PLUGINS_DIR="$HOME/.config/omarchy/plugins"
+if [[ -d "$THEME_DIR/plugins/macos.nowplaying" ]]; then
+  echo -e "${BLUE}==>${NC} Installing macOS Now Playing menu bar widget..."
+  mkdir -p "$SHELL_PLUGINS_DIR/macos.nowplaying"
+  cp -rf "$THEME_DIR/plugins/macos.nowplaying/"* "$SHELL_PLUGINS_DIR/macos.nowplaying/"
+
+  SHELL_CONFIG="$HOME/.config/omarchy/shell.json"
+  if [[ -f "$SHELL_CONFIG" ]] && ! grep -q "macos.nowplaying" "$SHELL_CONFIG"; then
+    python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    if not any(item.get("id") == "macos.nowplaying" for item in right):
+        idx = next((i for i, item in enumerate(right) if item.get("id") in ("omarchy.bluetooth", "omarchy.audio")), len(right))
+        right.insert(idx, {"id": "macos.nowplaying"})
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$SHELL_CONFIG" 2>/dev/null || true
+    omarchy restart shell 2>/dev/null || true
+  fi
+fi
+
+# 7. Setup macOS "Activity Monitor" (System Stats) Widget
+if [[ -d "$THEME_DIR/plugins/macos.stats" ]]; then
+  echo -e "${BLUE}==>${NC} Installing macOS Activity Monitor stats widget..."
+  mkdir -p "$SHELL_PLUGINS_DIR/macos.stats"
+  cp -rf "$THEME_DIR/plugins/macos.stats/"* "$SHELL_PLUGINS_DIR/macos.stats/"
+
+  SHELL_CONFIG="$HOME/.config/omarchy/shell.json"
+  if [[ -f "$SHELL_CONFIG" ]] && ! grep -q "macos.stats" "$SHELL_CONFIG"; then
+    python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    if not any(item.get("id") == "macos.stats" for item in right):
+        idx = next((i for i, item in enumerate(right) if item.get("id") in ("omarchy.monitor", "omarchy.power")), len(right))
+        right.insert(idx, {"id": "macos.stats"})
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$SHELL_CONFIG" 2>/dev/null || true
+    omarchy restart shell 2>/dev/null || true
+  fi
 fi
 
 # Reload Hyprland
 hyprctl reload >/dev/null 2>&1 || true
 
-echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, and dynamic cursor setup complete! 🎉"
+echo -e "${GREEN}==>${NC} macOS Sequoia Theme, gestures, shortcuts, spaces daemon, dynamic cursor, Now Playing, and Stats setup complete! 🎉"

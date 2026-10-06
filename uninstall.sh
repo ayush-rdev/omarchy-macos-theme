@@ -43,7 +43,8 @@ HYPR_BINDINGS="$HOME/.config/hypr/bindings.lua"
 HYPR_INPUT="$HOME/.config/hypr/input.lua"
 
 if [[ -f "$HYPR_MAIN" ]]; then
-  sed -i '/dynamic-cursors.so/d' "$HYPR_MAIN"
+  sed -i '/dynamic-cursor/d' "$HYPR_MAIN"
+  sed -i '/pcall.*hl\.plugin\.load/d' "$HYPR_MAIN"
 fi
 
 if [[ -f "$HYPR_LOOK" ]]; then
@@ -71,6 +72,9 @@ fi
 
 if [[ -f "$HYPR_INPUT" ]]; then
   sed -i '/toggle-window-switcher/d' "$HYPR_INPUT"
+  sed -i '/macOS Touchpad gestures/d' "$HYPR_INPUT"
+  sed -i '/hl.gesture({ fingers = 3/d' "$HYPR_INPUT"
+  sed -i '/hl.dsp.window.close()/d' "$HYPR_INPUT"
 fi
 
 # 5. Restore stock GNOME Sushi if modified
@@ -79,7 +83,26 @@ if command -v pacman >/dev/null 2>&1 && command -v sushi >/dev/null 2>&1; then
   sudo pacman -S --noconfirm sushi 2>/dev/null || true
 fi
 
-# 6. Remove theme files and switch to an Omarchy default theme
+# 6. Remove macOS Now Playing and Stats plugins
+rm -rf "$HOME/.config/omarchy/plugins/macos.nowplaying" "$HOME/.config/omarchy/plugins/macos.stats"
+if [[ -f "$HOME/.config/omarchy/shell.json" ]]; then
+  python3 -c '
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path, "r") as f:
+        data = json.load(f)
+    right = data.get("bar", {}).get("layout", {}).get("right", [])
+    data["bar"]["layout"]["right"] = [item for item in right if item.get("id") not in ("macos.nowplaying", "macos.stats")]
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+except Exception:
+    pass
+' "$HOME/.config/omarchy/shell.json" 2>/dev/null || true
+  omarchy restart shell 2>/dev/null || true
+fi
+
+# 7. Remove theme files and switch to an Omarchy default theme
 echo -e "${BLUE}==>${NC} Removing theme files..."
 omarchy theme remove macos 2>/dev/null || rm -rf "$HOME/.config/omarchy/themes/macos"
 

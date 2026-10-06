@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "macos.stats",
+  "name": "Activity Monitor",
+  "version": "1.0.0",
+  "author": "Parikshit",
+  "description": "Minimalist macOS Activity Monitor hardware stats for CPU, RAM, GPU, Temperatures, and Disk",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Activity Monitor",
+    "description": "Minimalist hardware activity monitor",
+    "category": "System",
+    "allowMultiple": false
+  }
+}

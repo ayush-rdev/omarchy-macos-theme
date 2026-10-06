@@ -59,6 +59,7 @@ curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/mast
 | **Hide Window** | `Super + H` | Sends active window to scratchpad. |
 | **Unhide Window** | `Super + Alt + H` | Restores window onto the current active workspace. |
 | **Close All in Workspace** | `Super + Alt + W` | Closes all open windows on the active workspace. |
+| **Now Playing Music Widget** | `Click music icon in bar` | Flyout player card with album art, track info, live progress bar, and media controls. |
 | **Quick Look File Preview** | `Spacebar` *(in file manager)* | Previews images, PDFs, text, audio, and video instantly in a floating window. Tap `Space` or `Esc` to close. |
 | **Clipboard History** | `Super + V` | Opens the clipboard manager. |
 | **Capture Menu** | `Super + Alt + C` | Opens the screenshot and screen recording menu. |

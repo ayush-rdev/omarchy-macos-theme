@@ -175,11 +175,17 @@ hl.config({
       },
       hyprcursor = {
         enabled = true,
-        nearest = true,
+        nearest = false,
         resolution = -1,
         fallback = "clientside",
       },
     },
+  },
+  env = {
+    "HYPRCURSOR_THEME,macOS-hypr",
+    "HYPRCURSOR_SIZE,28",
+    "XCURSOR_THEME,macOS-hypr",
+    "XCURSOR_SIZE,28",
   },
 })
 
