@@ -347,7 +347,7 @@ BarWidget {
           foreground: root.bar.foreground
           horizontalPadding: Style.space(8)
           verticalPadding: Style.space(8)
-          onClicked: { root.close(); Quickshell.execDetached(["hyprlock"]) }
+          onClicked: { root.close(); Quickshell.execDetached(["omarchy-system-lock"]) }
         }
         Button {
           width: (parent.width - parent.columnSpacing) / 2
