@@ -262,11 +262,19 @@ if [[ -f "$THEME_DIR/patches/org.gnome.NautilusPreviewer.src.gresource" && -d "/
 fi
 
 # ------------------------------------------------------------------------------
-# 9. Apply Theme & Reload Session
+# 9. Apply Theme, Set Active macOS Wallpaper & Reload Session
 # ------------------------------------------------------------------------------
 echo -e "${BLUE}==>${NC} [9/9] Activating macOS Sequoia theme..."
 if command -v omarchy >/dev/null 2>&1; then
   omarchy theme set macos
+
+  # Ensure the authentic Sonoma Horizon wallpaper (matching current setup) is set
+  SONOMA_WALL="$HOME/.local/state/omarchy/current/theme/backgrounds/7-sonoma-horizon.png"
+  if [[ -f "$SONOMA_WALL" ]]; then
+    echo -e "    Setting default wallpaper to Sonoma Horizon..."
+    omarchy theme bg set "$SONOMA_WALL" 2>/dev/null || ln -nsf "$SONOMA_WALL" "$HOME/.local/state/omarchy/current/background"
+  fi
+
   omarchy restart shell 2>/dev/null || true
 fi
 
