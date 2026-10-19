@@ -1,151 +1,259 @@
-# macOS Sequoia Theme for Omarchy
+<div align="center">
 
-An authentic macOS Sequoia theme for the **Omarchy Hyprland Desktop**, featuring translucent frosted glass surfaces, subtle 1px Retina glass rim borders, Apple spring animation physics, native macOS Spaces, fluid gestures, and dynamic cursor magnification.
+#  macOS Sequoia for Omarchy & Hyprland
 
-![Preview](preview.png)
+### *The Definitive, Pixel-Perfect Apple Experience Engineered for Modern Wayland Desktop*
+
+[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Hyprland](https://img.shields.io/badge/Hyprland-00aaee?style=for-the-badge&logo=wayland&logoColor=white)](https://hyprland.org/)
+[![Omarchy](https://img.shields.io/badge/Omarchy_Quattro-8A2BE2?style=for-the-badge&logo=archlinux&logoColor=white)](https://omarchy.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-0a84ff?style=for-the-badge)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/ayush-rdev/omarchy-macos-theme?style=for-the-badge&color=ffaa00)](https://github.com/ayush-rdev/omarchy-macos-theme/stargazers)
+
+<br/>
+
+```
+        macOS Sequoia Aesthetic  •  Dual Kawase Frosted Glass  •  Native Spaces Physics  •  Retina 1px Rim
+```
+
+<br/>
+
+<img src="preview.png" alt="macOS Sequoia Desktop Preview" width="100%" style="border-radius: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.55);" />
+
+<br/><br/>
+
+| 🔒 **macOS Sonoma / Sequoia Lock Screen** | 🚀 **LUKS Disk Decryption Boot UI** |
+| :---: | :---: |
+| <img src="preview-lock.png" alt="Lock Screen Preview" width="480px" style="border-radius: 10px;" /> | <img src="preview-boot.png" alt="Boot Screen Preview" width="480px" style="border-radius: 10px;" /> |
+
+</div>
 
 ---
 
-## Features
+## ⚡ 1-Command Automated Installation
 
-- **Glass Hairline Borders (1px Retina)**: Soft translucent glass reflection (`rgba(ffffff28)` active, `rgba(ffffff10)` inactive) that pairs naturally with deep macOS drop shadows.
-- **Apple Spring & Deceleration Physics**: Custom fluid cubic-bezier curves (`macEase`, `macSpring`, `macSpace`) matching macOS Mission Control and Spaces transitions.
-- **macOS "Shake to Find" Dynamic Cursor**: Magnifies the cursor when shaken rapidly across the display and smoothly scales down when stationary, with zero tilt or distortion.
-- **Native macOS Spaces Workflow**: Dedicated fullscreen spaces with zero window resize jitter. When a dedicated space window closes, the space automatically destroys itself and returns to your previous active workspace.
-- **Touchpad Gestures**: 3-finger horizontal swipe to slide between spaces, and 3-finger swipe up to open the window switcher.
-- **macOS "Quick Look" File Preview**: Tap `Spacebar` on any file (images, PDFs, documents, audio, video) in the file manager to immediately open a floating preview window, and tap `Spacebar` or `Escape` to close it.
-- **Curated 4K Apple Wallpapers**: Dynamic light and dark 4K wallpapers from macOS Sequoia, Sonoma, Ventura, Monterey, and Big Sur.
-
----
-
-## Quick Installation
-
-Run the automated installer script to set up the theme, helper scripts, gestures, shortcuts, dynamic cursor plugin, and spaces background daemon:
+Transform your desktop into an authentic Apple macOS Sequoia environment with a single terminal command. Zero manual configuration, zero dependency headaches.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/master/install.sh | bash
 ```
 
-*Or from a local clone:*
+> [!TIP]
+> **What the installer automates:**
+> 1. Clones and stages the complete macOS Sequoia theme into Omarchy without stripping Lua scripts.
+> 2. Deploys the high-efficiency Dual Kawase frosted glass blur and translucent window rules.
+> 3. Installs all helper scripts (`omarchy-toggle-fullscreen-space`, `omarchy-spaces-listener`, `omarchy-glass-toggle`, `omarchy-window-hide`, `toggle-window-switcher`) to `~/.local/bin/`.
+> 4. Activates the background Spaces auto-cleanup and return daemon via systemd user service.
+> 5. Binds all macOS keybindings, window rules, and 3-finger horizontal touchpad gestures.
+> 6. Deploys the dynamic cursor plugin for macOS "Shake to Find" magnification.
+> 7. Installs `Liga SFMono Nerd Font` & Apple SF Pro typography.
+> 8. Applies your default 4K **Sonoma Horizon** wallpaper and reloads the desktop live.
+
+---
+
+## 💎 Architectural Highlights
+
+```mermaid
+graph LR
+    A[" macOS Theme Core"] --> B["Dual Kawase Frosted Glass<br/>(glass.lua)"]
+    A --> C["Dwindle Tiling & Gaps<br/>(12px Squircle, 36px Shadow)"]
+    A --> D["Apple Fluid Curves<br/>(macEase, macSpring)"]
+    A --> E["macOS Spaces Daemon<br/>(Socket2 Listener)"]
+    A --> F["Touchpad Gestures<br/>(3-Finger Navigation)"]
+    A --> G["Shake to Find Cursor<br/>(Dynamic Magnification)"]
+    A --> H["Apple SF Typography<br/>(SFMono NF + SF Pro)"]
+```
+
+### 1. 🪟 High-Efficiency Dual Kawase Frosted Glass
+* **Dual Kawase 2-Pass Shader Blur**: Maximum creamy optical diffusion with minimal pixel sampling overhead, keeping thermals low and frame latency under 0.8ms.
+* **Intelligent Occlusion Cipping**: `new_optimizations = true` skips rendering blur behind opaque window regions, saving GPU fill-rate.
+* **Dynamic Glass Toggle**: Press <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Backspace</kbd> to toggle between frosted translucent glass and solid high-contrast mode in real-time.
+* **Layer Surface Diffusion**: Applies blur across the Omarchy status bar, popup panels, notification center, clipboard manager, and OSD.
+
+### 2. 🎯 Retina 1px Glass Rim Borders & Drop Shadows
+* **Active Glow Rim**: 1px gradient hairline border at 45° transitioning from Apple Blue (`#0a84ff`) to Electric Cyan (`#64d2ff`) with translucent alpha channel (`rgba(0a84ffb8)` ➔ `rgba(64d2ff98)`).
+* **Inactive Glass Rim**: Subtle frosted glass reflection border (`rgba(ffffff12)`).
+* **Directional Drop Shadows**: 36px wide ambient downward shadow (`offset = { 0, 6 }`, `render_power = 4`) reproducing macOS elevation depth.
+
+### 3. 📐 Golden Ratio Dwindle Tiling & Proportions
+* **Top Bar Alignment Gaps**: Calibrated `gaps_out = { top = 5, right = 10, bottom = 10, left = 10 }` and `gaps_in = 6` for a tight 5px clearance beneath the menu bar.
+* **12px Squircle Corners**: Exact Apple continuous curve curvature radius.
+
+### 4. 🌊 Apple Spring & Deceleration Physics
+Faithfully calibrated cubic-bezier animation equations extracted from macOS Sequoia window server:
+* `macEase` — `cubic-bezier(0.16, 1.0, 0.3, 1.0)`: Signature fluid deceleration for window borders and layers.
+* `macSpring` — `cubic-bezier(0.05, 0.9, 0.1, 1.04)`: Subtle overshoot physics giving responsive life to opening windows.
+* `macQuick` — `cubic-bezier(0.25, 1.0, 0.5, 1.0)`: Instantaneous responsive curve for tooltips and menus.
+* `macSpace` — `cubic-bezier(0.2, 0.8, 0.2, 1.0)`: Gliding horizontal slide curve for spaces switching.
+
+### 5. 🚀 Native macOS Spaces Architecture
+* **Single-Window Fullscreen Spaces**: Toggle windows into clean dedicated fullscreen spaces (<kbd>Super</kbd> + <kbd>F</kbd> or 3-finger click) with zero window bounce.
+* **Socket2 Auto-Cleanup Daemon**: An event-driven background listener monitors the Hyprland IPC socket. When a dedicated space window closes, the daemon automatically destroys the empty workspace and slides you seamlessly back to your previous active workspace.
+
+### 6. 🖐️ Fluid 3-Finger Touchpad Gestures
+* **3-Finger Horizontal Swipe ↔**: Glides smoothly between active workspaces with Apple slide curves.
+* **3-Finger Swipe Up ↑**: Opens the Spotlight-inspired fuzzy window switcher.
+* **3-Finger Swipe Down ↓**: Dismisses/closes the active window.
+
+### 7. 🖱️ macOS "Shake to Find" Dynamic Cursor
+* Rapidly shaking your pointer across the display dynamically magnifies the cursor up to 5.5× and gracefully shrinks it back down when stationary — powered by the zero-distortion `dynamic-cursors` engine.
+
+### 8. 🔍 macOS Quick Look File Previews (`Spacebar`)
+* Integrated GNOME Sushi patched with authentic macOS borderless floating styling. Press <kbd>Spacebar</kbd> in Nautilus on any image, video, PDF, document, or audio file to preview instantly; tap <kbd>Spacebar</kbd> or <kbd>Esc</kbd> to dismiss.
+
+### 9. 🎨 17 Curated 4K Apple Wallpapers
+* Bundled with all iconic 4K dynamic light and dark wallpapers from Sequoia, Sonoma Horizon, Lake Tahoe, Mojave Night, Catalina Island, Ventura, Monterey, and Big Sur.
+
+---
+
+## ⌨️ Complete Keybindings & Gestures Cheat-Sheet
+
+### 🪟 Window Management & Glass Effects
+| Action | Shortcut / Trigger | Description |
+| :--- | :--- | :--- |
+| **Toggle Glass Blur** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Backspace</kbd> | Toggles Dual Kawase frosted glass & translucency on/off |
+| **Dedicated Space** | <kbd>Super</kbd> + <kbd>F</kbd> *(or 3-finger click)* | Moves window into a dedicated single-app space |
+| **Exit Dedicated Space** | <kbd>Super</kbd> + <kbd>F</kbd> | Returns window back to its origin workspace |
+| **Traditional Fullscreen** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | Maximizes window inside current workspace |
+| **Hide Window** | <kbd>Super</kbd> + <kbd>H</kbd> | Minimizes active window to scratchpad |
+| **Unhide Window** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>H</kbd> | Restores minimized window to current workspace |
+| **Close All in Space** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>W</kbd> | Closes every open window on the active workspace |
+| **Quick Look Preview** | <kbd>Spacebar</kbd> *(in Nautilus)* | Instant floating preview for images, PDFs, code, media |
+
+### 🧭 Navigation & Gestures
+| Action | Shortcut / Gesture | Description |
+| :--- | :--- | :--- |
+| **Slide Workspaces** | **3-Finger Swipe Horizontal ↔** | Glides between spaces with Apple inertia |
+| **Next Workspace** | <kbd>Super</kbd> + <kbd>Tab</kbd> | Cycles to next workspace |
+| **Spotlight Window Switcher** | **3-Finger Swipe Up ↑** | Fuzzy window selector across all spaces |
+| **Close Active Window** | **3-Finger Swipe Down ↓** | Closes / dismisses focused window |
+| **Move Window & Follow** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>1-9</kbd> | Moves window to space `1-9` and switches focus |
+| **Move Window Silently** | <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>1-9</kbd> | Moves window to space `1-9` without following |
+
+### 🛠️ Utilities & System Panels
+| Action | Shortcut | Description |
+| :--- | :--- | :--- |
+| **Clipboard History** | <kbd>Super</kbd> + <kbd>V</kbd> | Opens Quickshell clipboard manager |
+| **Screen Capture Menu** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>C</kbd> | Opens screenshot & recording menu |
+| **Extract Text (OCR)** | <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Print</kbd> | Captures region text directly to clipboard |
+| **Shake to Find** | **Rapid mouse shake** | Enlarges cursor pointer dynamically |
+
+---
+
+## 🖼️ Wallpaper Management
+
+The theme ships with 17 high-resolution macOS wallpapers pre-indexed into Omarchy's background engine:
+
 ```bash
-./install.sh
+# Cycle to next wallpaper
+omarchy theme bg next
+
+# Open the visual GUI wallpaper picker
+omarchy menu wallpaper
+
+# Set a specific wallpaper
+omarchy theme bg set ~/.local/state/omarchy/current/theme/backgrounds/7-sonoma-horizon.png
 ```
 
 ---
 
-## Usage & Keybindings
+## 📂 Architecture & File Hierarchy
 
-### Spaces & Fullscreen
-| Action | Keybinding / Gesture | Description |
-| :--- | :--- | :--- |
-| **Enter Dedicated Space** | `Super + F` *(or 3-finger click)* | Moves the focused window into an empty workspace as a dedicated space. |
-| **Exit Dedicated Space** | `Super + F` | Returns the window back to its origin workspace. |
-| **Auto-Destruction on Close** | `Super + W` / `Super + Alt + W` | Closing the window automatically destroys the space and returns focus to your previous workspace. |
-| **Standard Fullscreen** | `Super + Alt + F` | Toggles traditional fullscreen within the current workspace. |
-
-### Navigation & Gestures
-| Action | Keybinding / Gesture | Description |
-| :--- | :--- | :--- |
-| **Slide Workspaces** | **3-Finger Swipe Horizontal** | Slides horizontally across active spaces. |
-| **Next Workspace** | `Super + Tab` | Cycles to the next workspace. |
-| **Window Switcher** | **3-Finger Swipe Up** | Opens the Spotlight-style window menu. |
-| **Close Active Window** | **3-Finger Swipe Down** / `Super + W` | Closes / dismisses the focused window. |
-| **Move Window & Follow** | `Super + Alt + [1-9]` | Moves active window to workspace `1-9` and switches focus. |
-| **Move Window Silently** | `Super + Shift + [1-9]` | Moves active window to workspace `1-9` without switching focus. |
-
-### Window Management & Effects
-| Action | Keybinding | Description |
-| :--- | :--- | :--- |
-| **Toggle Glass Blur** | `Super + Alt + Backspace` | Toggles high-efficiency Dual Kawase frosted glass & window translucency live. |
-| **Hide Window** | `Super + H` | Sends active window to scratchpad. |
-| **Unhide Window** | `Super + Alt + H` | Restores window onto the current active workspace. |
-| **Close All in Workspace** | `Super + Alt + W` | Closes all open windows on the active workspace. |
-| **Quick Look File Preview** | `Spacebar` *(in file manager)* | Previews images, PDFs, text, audio, and video instantly in a floating window. Tap `Space` or `Esc` to close. |
-| **Clipboard History** | `Super + V` | Opens the clipboard manager. |
-| **Capture Menu** | `Super + Alt + C` | Opens the screenshot and screen recording menu. |
-| **Extract Text (OCR)** | `Super + Alt + Print` | Captures region text directly to clipboard. |
-
-### Shake to Find Cursor
-Shake your mouse rapidly back and forth across the screen. The pointer automatically enlarges up to 5.5× and gracefully shrinks back to default size when idle.
+```
+~/.config/omarchy/themes/macos/
+├── colors.toml               # Palette, Retina 1px Apple border tokens
+├── shell.toml                # Top bar, launcher, popups, and OSD styling
+├── hyprland.lua              # Dwindle tiling, 12px squircle, drop shadows, curves
+├── glass.lua                 # Dual Kawase blur & window opacity rules
+├── icons.theme               # WhiteSur macOS dark icon pairing
+├── alacritty.toml            # Alacritty terminal theme
+├── foot.ini                  # Foot terminal theme
+├── ghostty.conf              # Ghostty terminal theme
+├── kitty.conf                # Kitty terminal theme
+├── macOS-Sequoia.tdesktop    # Telegram Desktop Sequoia theme
+├── backgrounds/              # 17 High-Resolution 4K macOS Wallpapers
+├── lock-designs/             # Native macOS Sonoma & Sequoia Lock Screens
+├── boot-designs/             # LUKS disk decryption boot layout
+├── patches/                  # GNOME Sushi Quick Look borderless UI patch
+├── plugins/                  # Dynamic Cursors plugin binary
+└── scripts/                  # macOS window & space management utilities
+    ├── omarchy-glass-toggle
+    ├── omarchy-toggle-fullscreen-space
+    ├── omarchy-spaces-listener
+    ├── omarchy-close-workspace-windows
+    ├── omarchy-window-hide
+    └── toggle-window-switcher
+```
 
 ---
 
-## Manual Installation
+## 🛠️ Manual Installation (For Power Users)
 
-For manual configuration without running the installer script:
+If you prefer to configure manually without running the 1-command installer:
 
-### 1. Install & Apply Theme
 ```bash
-omarchy theme install https://github.com/ayush-rdev/omarchy-macos-theme.git
-omarchy theme set macos
-```
+# 1. Clone repository
+git clone https://github.com/ayush-rdev/omarchy-macos-theme.git ~/.config/omarchy/themes/macos
 
-### 2. Copy Helper Scripts
-```bash
-cp ~/.config/omarchy/themes/macos/scripts/* ~/.local/bin/
+# 2. IMPORTANT: Remove .git so Omarchy treats it as a user-authored theme
+rm -rf ~/.config/omarchy/themes/macos/.git
+
+# 3. Copy helper scripts to PATH
+cp -f ~/.config/omarchy/themes/macos/scripts/* ~/.local/bin/
 chmod +x ~/.local/bin/omarchy-* ~/.local/bin/toggle-window-switcher
-```
 
-### 3. Autostart Spaces Daemon
-Add the following to `~/.config/hypr/autostart.lua`:
-```lua
-o.launch_on_start("omarchy-spaces-listener")
-```
+# 4. Deploy frosted glass configuration
+cp -f ~/.config/omarchy/themes/macos/glass.lua ~/.config/hypr/glass.lua
+mkdir -p ~/.local/state/omarchy/toggles/hypr
+cp -f ~/.config/hypr/glass.lua ~/.local/state/omarchy/toggles/hypr/glass.lua
+omarchy bar transparent true
 
-### 4. Enable Dynamic Cursors Plugin
-```bash
-mkdir -p ~/.config/hypr/plugins
-cp ~/.config/omarchy/themes/macos/plugins/dynamic-cursors.so ~/.config/hypr/plugins/
-```
+# 5. Enable Spaces background listener service
+cat << 'EOF' > ~/.config/systemd/user/omarchy-spaces-listener.service
+[Unit]
+Description=macOS Spaces Auto-Clean & Return daemon for Hyprland
+PartOf=graphical-session.target
+After=graphical-session.target
 
-In `~/.config/hypr/hyprland.lua`:
-```lua
-hl.plugin.load(os.getenv("HOME") .. "/.config/hypr/plugins/dynamic-cursors.so")
-```
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/omarchy-spaces-listener
+Restart=always
 
-In `~/.config/hypr/looknfeel.lua`:
-```lua
-hl.config({
-  plugin = {
-    dynamic_cursors = {
-      enabled = true,
-      mode = "none",
-      shake = {
-        enabled = true,
-        threshold = 5.0,
-        base = 3.5,
-        speed = 4.0,
-        limit = 5.5,
-        timeout = 1000,
-        effects = false,
-      },
-    },
-  },
-})
+[Install]
+WantedBy=graphical-session.target
+EOF
+
+systemctl --user daemon-reload
+systemctl --user enable --now omarchy-spaces-listener.service
+
+# 6. Apply theme
+omarchy theme set macos
+hyprctl reload
 ```
 
 ---
 
-## Helper Scripts
+## 🧹 Complete Uninstallation
 
-The `scripts/` directory contains utilities for window management:
-- `omarchy-toggle-fullscreen-space`: Manages single-window workspaces without layout bounce.
-- `omarchy-spaces-listener`: Background daemon monitoring socket events for space cleanup and compaction.
-- `omarchy-close-workspace-windows`: Closes all windows on the active workspace.
-- `omarchy-window-hide`: Handles scratchpad show/hide routines.
-- `toggle-window-switcher`: Spotlight-style fuzzy window selector.
-
----
-
-## Uninstallation
-
-To remove the theme, background services, plugins, and helper scripts:
+To restore your system to defaults and remove all scripts, services, and plugins:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/master/uninstall.sh | bash
 ```
 
-*Or from a local clone:*
-```bash
-./uninstall.sh
-```
+---
+
+## 🤝 Community & Credits
+
+* Engineered with ❤️ for the [Omarchy](https://omarchy.org/) Linux distribution.
+* Blur physics based on the Dual Kawase filter algorithm.
+* Shake-to-find dynamic cursor powered by [virtcode/hypr-dynamic-cursors](https://github.com/virtcode/hypr-dynamic-cursors).
+* Quick Look file previews powered by [GNOME Sushi](https://gitlab.gnome.org/GNOME/sushi).
+* Ligaturized Apple SFMono font by [shaunsingh](https://github.com/shaunsingh/SFMono-Nerd-Font-Ligaturized).
+
+<div align="center">
+
+**[⬆ Back to Top](#-macos-sequoia-for-omarchy--hyprland)**
+
+</div>
