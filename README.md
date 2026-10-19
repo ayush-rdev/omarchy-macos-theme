@@ -53,9 +53,10 @@ curl -fsSL https://raw.githubusercontent.com/ayush-rdev/omarchy-macos-theme/mast
 | **Move Window & Follow** | `Super + Alt + [1-9]` | Moves active window to workspace `1-9` and switches focus. |
 | **Move Window Silently** | `Super + Shift + [1-9]` | Moves active window to workspace `1-9` without switching focus. |
 
-### Window Management
+### Window Management & Effects
 | Action | Keybinding | Description |
 | :--- | :--- | :--- |
+| **Toggle Glass Blur** | `Super + Alt + Backspace` | Toggles high-efficiency Dual Kawase frosted glass & window translucency live. |
 | **Hide Window** | `Super + H` | Sends active window to scratchpad. |
 | **Unhide Window** | `Super + Alt + H` | Restores window onto the current active workspace. |
 | **Close All in Workspace** | `Super + Alt + W` | Closes all open windows on the active workspace. |

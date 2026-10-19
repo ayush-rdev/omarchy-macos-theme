@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# omarchy:summary=Toggle the high-efficiency glass effect (Dual Kawase blur & translucent windows)
+# omarchy:args=[on|off|toggle|status]
+
+set -euo pipefail
+
+TOGGLE_DIR="$HOME/.local/state/omarchy/toggles/hypr"
+TOGGLE_FILE="$TOGGLE_DIR/glass.lua"
+SOURCE_FILE="$HOME/.config/hypr/glass.lua"
+
+ACTION="${1:-toggle}"
+
+enable_glass() {
+  if [[ ! -f $SOURCE_FILE ]]; then
+    echo "Error: Source config $SOURCE_FILE not found" >&2
+    exit 1
+  fi
+
+  mkdir -p "$TOGGLE_DIR"
+  cp "$SOURCE_FILE" "$TOGGLE_FILE"
+
+  # Sync top bar transparency
+  omarchy bar transparent true >/dev/null 2>&1 || true
+
+  # Reload Hyprland
+  hyprctl reload >/dev/null 2>&1 || true
+
+  notify-send -h string:x-canonical-private-synchronous:glass \
+    -i preferences-desktop-theme \
+    "Glass Effect" "Enabled (Optimized Dual Kawase)" 2>/dev/null || true
+
+  echo "Glass effect enabled"
+}
+
+disable_glass() {
+  rm -f "$TOGGLE_FILE"
+
+  # Restore solid top bar
+  omarchy bar transparent false >/dev/null 2>&1 || true
+
+  # Reload Hyprland
+  hyprctl reload >/dev/null 2>&1 || true
+
+  notify-send -h string:x-canonical-private-synchronous:glass \
+    -i preferences-desktop-theme \
+    "Glass Effect" "Disabled (Solid Performance)" 2>/dev/null || true
+
+  echo "Glass effect disabled"
+}
+
+is_enabled() {
+  [[ -f $TOGGLE_FILE ]]
+}
+
+case "$ACTION" in
+  on)
+    enable_glass
+    ;;
+  off)
+    disable_glass
+    ;;
+  toggle|"")
+    if is_enabled; then
+      disable_glass
+    else
+      enable_glass
+    fi
+    ;;
+  status)
+    if is_enabled; then
+      echo "enabled"
+      exit 0
+    else
+      echo "disabled"
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Usage: omarchy-glass-toggle [on|off|toggle|status]" >&2
+    exit 1
+    ;;
+esac

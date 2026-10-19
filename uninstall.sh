@@ -32,8 +32,12 @@ rm -f "$HOME/.local/bin/omarchy-toggle-fullscreen-space" \
       "$HOME/.local/bin/omarchy-spaces-listener" \
       "$HOME/.local/bin/omarchy-close-workspace-windows" \
       "$HOME/.local/bin/omarchy-window-hide" \
+      "$HOME/.local/bin/omarchy-glass-toggle" \
       "$HOME/.local/bin/toggle-window-switcher" \
+      "$HOME/.config/hypr/glass.lua" \
+      "$HOME/.local/state/omarchy/toggles/hypr/glass.lua" \
       "/tmp/hypr_macos_spaces_state.json"
+omarchy bar transparent false 2>/dev/null || true
 
 # 4. Clean up theme references from hyprland configuration files
 echo -e "${BLUE}==>${NC} Cleaning up Hyprland configs..."
